@@ -1,13 +1,11 @@
 import { eq } from 'drizzle-orm';
 import { tables, useDrizzle } from '~~/server/utils/drizzle';
-import { isAdmin } from '~~/server/utils/requireSession';
+import { ensureProfileSchema } from '~~/server/utils/profile-schema';
 
 export default defineEventHandler(async (event) => {
-  if (!(await isAdmin(event))) {
-    return createError({ status: 403, statusText: 'Forbidden' });
-  }
 
   const db = useDrizzle();
+  await ensureProfileSchema(db)
 
   const teachers = await db
     .select({
@@ -18,6 +16,11 @@ export default defineEventHandler(async (event) => {
       name: tables.Profile.name,
       lastName: tables.Profile.lastName,
       dob: tables.Profile.dob,
+      picture: tables.Profile.picture,
+      quote: tables.Profile.quote,
+      bio: tables.Profile.bio,
+      favoriteTricks: tables.Profile.favoriteTricks,
+      areaOfFocus: tables.Profile.areaOfFocus,
       contact: tables.Profile.contact,
     })
     .from(tables.User)

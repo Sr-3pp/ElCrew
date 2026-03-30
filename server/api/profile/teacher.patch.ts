@@ -1,14 +1,11 @@
 import { eq, tables, useDrizzle } from '~~/server/utils/drizzle';
 import { ensureProfileSchema } from '~~/server/utils/profile-schema';
-import { isAdmin } from '~~/server/utils/requireSession';
+import { requireTeacherSession } from '~~/server/utils/requireSession';
 import { deleteTeacherPicture, readTeacherForm, uploadTeacherPicture } from '~~/server/utils/teacher-form';
 
 export default defineEventHandler(async (event) => {
-  if (!(await isAdmin(event))) {
-    throw createError({ status: 403, statusText: 'Forbidden' });
-  }
+  const session = await requireTeacherSession(event);
 
-  const id = getRouterParam(event, 'id');
   const {
     username,
     email,
@@ -23,15 +20,16 @@ export default defineEventHandler(async (event) => {
     pictureFile,
   } = await readTeacherForm(event);
 
-  if (!id || !username || !email || !name || !lastName || !dob) {
+  if (!username || !email || !name || !lastName || !dob) {
     throw createError({
       status: 400,
-      statusText: 'id, username, email, name, lastName, and dob are required',
+      statusText: 'username, email, name, lastName, and dob are required',
     });
   }
 
   const db = useDrizzle();
   await ensureProfileSchema(db)
+  const userId = session.user.id;
 
   const [user] = await db
     .update(tables.User)
@@ -40,7 +38,7 @@ export default defineEventHandler(async (event) => {
       email,
       isTeacher: true,
     })
-    .where(eq(tables.User.id, id))
+    .where(eq(tables.User.id, userId))
     .returning();
 
   if (!user) {
@@ -50,11 +48,11 @@ export default defineEventHandler(async (event) => {
   const [existingProfile] = await db
     .select()
     .from(tables.Profile)
-    .where(eq(tables.Profile.userId, id))
+    .where(eq(tables.Profile.userId, userId))
     .limit(1);
 
   const picture = pictureFile
-    ? await uploadTeacherPicture(id, pictureFile)
+    ? await uploadTeacherPicture(userId, pictureFile)
     : existingProfile?.picture || null;
 
   const [profile] = existingProfile
@@ -71,13 +69,13 @@ export default defineEventHandler(async (event) => {
           areaOfFocus,
           contact,
         })
-        .where(eq(tables.Profile.userId, id))
+        .where(eq(tables.Profile.userId, userId))
         .returning()
     : await db
         .insert(tables.Profile)
         .values({
           id: crypto.randomUUID(),
-          userId: id,
+          userId,
           name,
           lastName,
           dob,

@@ -2,7 +2,7 @@
 title: El crew - Home page
 description: Welcome to the home page of our website. Explore our content and discover more about us.
 navigation:
-    title: Home
+    title: Inicio
     order: 1
 ---
 

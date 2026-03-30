@@ -2,6 +2,7 @@ import type { H3Event } from 'h3'
 
 type AuthSession = Awaited<ReturnType<typeof getAuthSession>>;
 type AdminUser = NonNullable<AuthSession>['user'] & { isAdmin?: boolean };
+type TeacherUser = NonNullable<AuthSession>['user'] & { isTeacher?: boolean };
 
 function headersFromEvent(event: H3Event) {
   const incoming = getRequestHeaders(event);
@@ -44,13 +45,28 @@ export async function requireAdminSession(event: H3Event) {
     throw createError({ status: 403, statusText: 'Forbidden' });
   }
 
-  return session;
+  return session as AuthSession & { user: AdminUser & { isAdmin: true } };
+}
+
+export async function requireTeacherSession(event: H3Event) {
+  const session = await getAuthSession(event);
+  if (!session) {
+    throw createError({ status: 401, statusText: 'Unauthorized' });
+  }
+
+  const user = session.user as TeacherUser;
+
+  if (!user?.isTeacher) {
+    throw createError({ status: 403, statusText: 'Forbidden' });
+  }
+
+  return session as AuthSession & { user: TeacherUser & { isTeacher: true } };
 }
 
 export async function isAdmin(event: H3Event) {
-  const session = await requireAdminSession(event)
-
-  if (!session || !session.user.isAdmin) {
+  try {
+    await requireAdminSession(event)
+  } catch {
     return false
   }
 

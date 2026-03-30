@@ -1,21 +1,27 @@
 import { tables, useDrizzle } from '~~/server/utils/drizzle';
+import { ensureProfileSchema } from '~~/server/utils/profile-schema';
 import { isAdmin } from '~~/server/utils/requireSession';
-import type { TeacherPayload } from '~~/types/teacher';
+import { readTeacherForm, uploadTeacherPicture } from '~~/server/utils/teacher-form';
 
 export default defineEventHandler(async (event) => {
   if (!(await isAdmin(event))) {
     throw createError({ status: 403, statusText: 'Forbidden' });
   }
 
-  const teacherPayload = await readBody<TeacherPayload>(event);
-
-  const username = teacherPayload?.username?.trim();
-  const email = teacherPayload?.email?.trim();
-  const password = teacherPayload?.password?.trim();
-  const name = teacherPayload?.name?.trim();
-  const lastName = teacherPayload?.lastName?.trim();
-  const dob = teacherPayload?.dob?.trim();
-  const contact = teacherPayload?.contact?.trim() || null;
+  const {
+    username,
+    email,
+    password,
+    name,
+    lastName,
+    dob,
+    quote,
+    bio,
+    favoriteTricks,
+    areaOfFocus,
+    contact,
+    pictureFile,
+  } = await readTeacherForm(event);
 
   if (!username || !email || !password || !name || !lastName || !dob) {
     throw createError({
@@ -55,6 +61,8 @@ export default defineEventHandler(async (event) => {
   }
 
   const db = useDrizzle();
+  await ensureProfileSchema(db)
+  const picture = pictureFile ? await uploadTeacherPicture(user.id, pictureFile) : null;
 
   const [profile] = await db
     .insert(tables.Profile)
@@ -64,6 +72,11 @@ export default defineEventHandler(async (event) => {
       name,
       lastName,
       dob,
+      picture,
+      quote,
+      bio,
+      favoriteTricks,
+      areaOfFocus,
       contact,
     })
     .returning();
@@ -83,6 +96,11 @@ export default defineEventHandler(async (event) => {
     name: profile.name,
     lastName: profile.lastName,
     dob: profile.dob,
+    picture: profile.picture,
+    quote: profile.quote,
+    bio: profile.bio,
+    favoriteTricks: profile.favoriteTricks,
+    areaOfFocus: profile.areaOfFocus,
     contact: profile.contact,
   };
 });

@@ -15,6 +15,10 @@ export interface AuthProfile {
     id: string
     userId: string
     contact: string | null
+    quote: string | null
+    bio: string | null
+    favoriteTricks: string | null
+    areaOfFocus: string | null
     name: string | null
     lastName: string | null
     dob: string | null
@@ -25,7 +29,8 @@ export interface AuthProfile {
 
 export interface AuthUser {
     id: string
-    username: string
+    name?: string
+    username?: string
     email: string
     emailVerified: boolean
     isAdmin: boolean
