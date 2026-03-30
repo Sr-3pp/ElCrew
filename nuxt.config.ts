@@ -33,6 +33,9 @@ const prerenderRoutes = getContentPageRoutes(resolve('content/pages'))
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
+  experimental: {
+    payloadExtraction: false,
+  },
 
   fonts: {
     provider: 'google',
