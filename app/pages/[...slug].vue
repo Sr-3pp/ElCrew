@@ -2,7 +2,7 @@
 const route = useRoute()
 
 const { data: page } = await useAsyncData(`content-${route.path}`, () =>
-  queryCollection('pages').path(route.path).first()
+  queryCollection('pages').where('path', '=', route.path).first()
 )
 
 if (!page.value) {
