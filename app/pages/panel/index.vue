@@ -1,0 +1,12 @@
+<script setup lang="ts">
+definePageMeta({
+    layout: 'panel'
+})
+</script>
+
+<template>
+    <div class="flex flex-col gap-4">
+        <h1 class="text-2xl font-bold">Panel</h1>
+        <p>Welcome to the admin panel. Here you can manage students and teachers.</p>
+    </div>
+</template>
