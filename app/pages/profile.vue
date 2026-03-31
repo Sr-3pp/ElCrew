@@ -119,10 +119,10 @@ section
                     div(class="flex flex-col gap-4")
                         p(class="italic") "Amazing instructor, really helped me nail my kickflip!"
 
-    UDrawer(v-if="isPageReady && isTeacher" side="bottom" v-model:open="isScheduleModalOpen" title="Schedule a class" trigger="Schedule a class")
+    UDrawer(v-if="isPageReady && isTeacher" side="bottom" v-model:open="isScheduleModalOpen" title="Schedule a class" description="Schedule a class with this teacher" trigger="Schedule a class")
         template(#body)
             TeacherScheduleModal
-    UModal(v-if="isPageReady && isTeacher" v-model:open="isFormOpen" title="Edit Teacher Profile" trigger="Edit Teacher Profile")
+    UModal(v-if="isPageReady && isTeacher" v-model:open="isFormOpen" title="Edit Teacher Profile" description="Edit the profile of this teacher" trigger="Edit Teacher Profile")
         template(#body)
             TeacherForm(
                 v-if="teacher"

@@ -11,6 +11,9 @@ importers:
       '@aws-sdk/client-s3':
         specifier: ^3.1019.0
         version: 3.1019.0
+      '@internationalized/date':
+        specifier: ^3.12.0
+        version: 3.12.0
       '@libsql/client':
         specifier: ^0.17.2
         version: 0.17.2
