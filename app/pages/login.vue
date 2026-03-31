@@ -15,19 +15,34 @@ const fields = ref<AuthFormField[]>([
 ])
 
 const { login } = useAuth()
+const errorMessage = ref<string | null>(null)
 
-const onSubmit = (event: FormSubmitEvent<{ email: string; password: string }>) => {
+const onSubmit = async (event: FormSubmitEvent<{ email: string; password: string }>) => {
+  errorMessage.value = null
+
   const payload = {
     email: event.data.email,
     password: event.data.password,
     callbackURL: '/'
   }
 
-  login(payload)
+  try {
+    await login(payload)
+  } catch (error) {
+    errorMessage.value = error instanceof Error
+      ? error.cause instanceof Error
+        ? error.cause.message
+        : error.message
+      : 'Login failed'
+  }
 }
 </script>
 
 <template lang="pug">
   UContainer.flex.flex-col.items-center.justify-center.py-10
-    UAuthForm(@submit="onSubmit" title="Login" :fields="fields" class="max-w-md")
+    UAuthForm(@submit="onSubmit" title="Login" :fields="fields" class="max-w-md w-full")
+    p.mt-3.text-sm.text-red-600(v-if="errorMessage") {{ errorMessage }}
+    p.mt-4.text-sm.text-gray-600
+      | Don't have an account?
+      NuxtLink(to="/register" class="ml-1 text-primary font-medium hover:underline") Register
 </template>

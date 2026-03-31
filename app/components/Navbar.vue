@@ -1,9 +1,9 @@
 <script setup lang="ts">
 
-const {session, fetchSession, logout} = useAuth()
+const {session, refreshSession, logout} = useAuth()
 
 onMounted(() => {
-  fetchSession()
+  refreshSession()
 })
 
 const {data: navItems} = useAsyncData('navigation', async () => {
