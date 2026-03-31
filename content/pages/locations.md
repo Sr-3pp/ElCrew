@@ -2,6 +2,6 @@
 title: class locations
 description: places where clases are done
 navigation:
-    title: Locations
+    title: Locaciones
     order: 4
 ---

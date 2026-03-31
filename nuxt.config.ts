@@ -1,4 +1,4 @@
-import { readdirSync } from 'node:fs'
+import { access, readdirSync } from 'node:fs'
 import { join, relative, resolve } from 'node:path'
 
 function getContentPageRoutes(dir: string): string[] {
@@ -56,13 +56,22 @@ export default defineNuxtConfig({
   },
   
   runtimeConfig: {
-    siteUrl: process.env.NUXT_SITE_URL || process.env.NUXT_PUBLIC_SITE_URL || '',
+    public: {
+      siteUrl: process.env.NUXT_SITE_URL || process.env.NUXT_PUBLIC_SITE_URL || '',
+    },
     turso: {
       url: process.env.NUXT_TURSO_URL || process.env.NUXT_TURSO_DATABASE_URL || '',
       token: process.env.NUXT_TURSO_TOKEN || ''
     },
     betterAuth: {
       token: process.env.BETTER_AUTH_SECRET || ''
+    },
+    r2: {
+      accessKeyId: process.env.R2_ACCESS_KEY_ID ?? process.env.NUXT_R2_ACCESS_KEY_ID ?? '',
+      accountId: process.env.R2_ACCOUNT_ID ?? process.env.NUXT_R2_ACCOUNT_ID ?? '',
+      bucketName: process.env.R2_BUCKET_NAME ?? process.env.NUXT_R2_BUCKET_NAME ?? '',
+      secretAccessKey:
+        process.env.R2_SECRET_ACCESS_KEY ?? process.env.NUXT_R2_SECRET_ACCESS_KEY ?? '',
     }
   },
 
@@ -73,7 +82,8 @@ export default defineNuxtConfig({
     '@nuxt/scripts',
     '@nuxt/test-utils',
     '@nuxt/ui',
-    '@vercel/analytics'
+    '@vercel/analytics',
+    '@nuxthub/core'
   ],
 
   css: ['@/assets/css/main.css'],
@@ -82,6 +92,21 @@ export default defineNuxtConfig({
     preset: 'vercel',
     prerender: {
       routes: prerenderRoutes
+    }
+  },
+  
+  hub: {
+    blob: {
+      driver: 's3',
+      endpoint:
+        process.env.R2_ENDPOINT
+        ?? process.env.NUXT_R2_ENDPOINT
+        ?? `https://${process.env.R2_ACCOUNT_ID ?? process.env.NUXT_R2_ACCOUNT_ID ?? ''}.r2.cloudflarestorage.com`,
+      region: 'auto',
+      accessKeyId: process.env.R2_ACCESS_KEY_ID ?? process.env.NUXT_R2_ACCESS_KEY_ID ?? '',
+      secretAccessKey:
+        process.env.R2_SECRET_ACCESS_KEY ?? process.env.NUXT_R2_SECRET_ACCESS_KEY ?? '',
+      bucket: process.env.R2_BUCKET_NAME ?? process.env.NUXT_R2_BUCKET_NAME ?? '',
     }
   }
 })

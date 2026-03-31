@@ -27,6 +27,18 @@ export const useAuth = () => {
     }
   }
 
+  const refreshSession = async () => {
+    try {
+      const response = await loadSession()
+      session.value = response?.user ?? null
+      return session.value
+    } catch (e) {
+      throw new Error('Failed to refresh session', {
+        cause: e instanceof Error ? e : new Error(String(e)),
+      })
+    }
+  }
+
   const login = async (payload: loginPayload) => {
     try {
       await authClient.signIn.email({
@@ -89,6 +101,7 @@ export const useAuth = () => {
 
   return {
     fetchSession,
+    refreshSession,
     session,
     login,
     register,

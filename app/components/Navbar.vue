@@ -16,7 +16,7 @@ const {data: navItems} = useAsyncData('navigation', async () => {
 })
 
 const authItems = computed(() => {
-  const username = session.value?.username || 'User'
+  const username = session.value?.username || session.value?.name || 'User'
   const fullName = [session.value?.profile?.name, session.value?.profile?.lastName].filter(Boolean).join(' ')
 
   return [

@@ -5,6 +5,7 @@ import type { H3Event } from 'h3';
 import { useRuntimeConfig } from '#imports';
 
 import { eq, useDrizzle, tables } from './drizzle';
+import { ensureProfileSchema } from './profile-schema';
 
 function createAuthInstance(event?: H3Event) {
   const db = useDrizzle();
@@ -49,6 +50,12 @@ function createAuthInstance(event?: H3Event) {
           input: true,
           defaultValue: false,
         },
+        username: {
+          type: 'string',
+          fieldName: 'username',
+          required: true,
+          input: true,
+        }
       },
     },
     session: {
@@ -62,6 +69,8 @@ function createAuthInstance(event?: H3Event) {
     },
     plugins: [
       customSession(async ({ user, session }) => {
+        await ensureProfileSchema(db)
+
         const [profile] = await db
           .select()
           .from(tables.Profile)

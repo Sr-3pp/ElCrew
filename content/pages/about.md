@@ -2,7 +2,7 @@
 title: El crew - About
 description: Learn more about El crew, our mission, and the team behind it. Discover our
 navigation:
-    title: Whp Us?
+    title: Nosotros
     order: 2
 ---
 
