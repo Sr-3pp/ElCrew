@@ -11,7 +11,7 @@ function createAuthInstance(event?: H3Event) {
   const db = useDrizzle();
   const runtimeConfig = useRuntimeConfig(event);
   const requestURL = event ? getRequestURL(event) : null;
-  const baseURL = runtimeConfig.siteUrl || (requestURL ? requestURL.origin : undefined);
+  const baseURL = runtimeConfig.public.siteUrl || (requestURL ? requestURL.origin : undefined);
 
   return betterAuth({
     baseURL,
@@ -89,14 +89,6 @@ function createAuthInstance(event?: H3Event) {
   });
 }
 
-type AuthInstance = ReturnType<typeof createAuthInstance>;
-
-let authSingleton: AuthInstance | null = null;
-
 export function useAuth(event?: H3Event) {
-  if (!authSingleton) {
-    authSingleton = createAuthInstance(event);
-  }
-
-  return authSingleton;
+  return createAuthInstance(event);
 }

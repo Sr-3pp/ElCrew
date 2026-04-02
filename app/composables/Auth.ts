@@ -1,25 +1,30 @@
-import type { AuthSessionResponse, AuthUser, registerPayload, loginPayload } from '~~/types/auth'
-import { authClient } from '~~/app/utils/auth-client'
+import type { AuthUser, registerPayload, loginPayload } from '~~/types/auth'
 import { getAuthSession } from '~~/app/utils/get-auth-session'
 
 export const useAuth = () => {
   const session = useState<AuthUser | null>('session', () => null)
 
-  const loadSession = async () => {
-    return await getAuthSession()
+  const authRequest = async (path: string, body?: Record<string, unknown>) => {
+    return await $fetch(path, {
+      method: 'POST',
+      body,
+      credentials: 'include',
+    })
   }
-  
-  const fetchSession = async () => {
-    if (session.value) {
+
+  const syncSession = async () => {
+    const response = await getAuthSession()
+    session.value = response?.user ?? null
+    return session.value
+  }
+
+  const fetchSession = async (options?: { force?: boolean }) => {
+    if (!options?.force && session.value) {
       return session.value
     }
 
     try {
-      const response = await loadSession()
-      if (response) {
-        session.value = response.user
-      }
-      return session.value
+      return await syncSession()
     } catch (e) {
       throw new Error('Failed to fetch session', {
         cause: e instanceof Error ? e : new Error(String(e)),
@@ -29,9 +34,7 @@ export const useAuth = () => {
 
   const refreshSession = async () => {
     try {
-      const response = await loadSession()
-      session.value = response?.user ?? null
-      return session.value
+      return await syncSession()
     } catch (e) {
       throw new Error('Failed to refresh session', {
         cause: e instanceof Error ? e : new Error(String(e)),
@@ -41,17 +44,21 @@ export const useAuth = () => {
 
   const login = async (payload: loginPayload) => {
     try {
-      await authClient.signIn.email({
+      session.value = null
+
+      await authRequest('/api/auth/sign-in/email', {
         email: payload.email,
         password: payload.password,
         callbackURL: payload.callbackURL,
       })
 
-      const response = await loadSession()
+      const currentSession = await refreshSession()
 
-      session.value = response?.user ?? null
+      if (!currentSession) {
+        throw new Error('Session was not created after login')
+      }
 
-      navigateTo('/')
+      await navigateTo('/')
     } catch (e) {
       throw new Error('Login failed', {
         cause: e instanceof Error ? e : new Error(String(e)),
@@ -60,12 +67,13 @@ export const useAuth = () => {
   }
 
   const register = async (payload: registerPayload) => {
-
     try {
-      await authClient.signUp.email({
+      await authRequest('/api/auth/sign-up/email', {
         email: payload.email,
         password: payload.password,
-        name: payload.name,
+        name: payload.username,
+        username: payload.username,
+        isTeacher: payload.isTeacher,
         callbackURL: payload.callbackURL,
       })
 
@@ -74,11 +82,13 @@ export const useAuth = () => {
         credentials: 'include',
       })
 
-      const response = await loadSession()
+      const currentSession = await refreshSession()
 
-      session.value = response?.user ?? null
+      if (!currentSession) {
+        throw new Error('Session was not created after registration')
+      }
 
-      navigateTo('/')
+      await navigateTo('/')
     } catch (e) {
       throw new Error('Registration failed', {
         cause: e instanceof Error ? e : new Error(String(e)),
@@ -89,8 +99,7 @@ export const useAuth = () => {
    
   const logout = async () => {
     try {
-      await authClient.signOut()
-
+      await authRequest('/api/auth/sign-out')
       session.value = null
     } catch (e) {
       throw new Error('Logout failed', {

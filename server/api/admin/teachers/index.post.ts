@@ -43,6 +43,7 @@ export default defineEventHandler(async (event) => {
       method: 'POST',
       body: {
         name: username,
+        username,
         email,
         password,
         isTeacher: true,

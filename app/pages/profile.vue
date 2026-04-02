@@ -105,7 +105,7 @@ section
                             h2(class="text-2xl font-bold") Favorite Tricks
                     
                     ul
-                        li(v-for="trick in teacher?.favoriteTricks.split(',') || []" :key="trick") {{ trick }}
+                        li(v-for="trick in teacher?.favoriteTricks?.split(',') || []" :key="trick") {{ trick }}
 
     UContainer(class="pb-16")
         UPageGrid(:ui="gridUi")

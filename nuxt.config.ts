@@ -58,6 +58,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       siteUrl: process.env.NUXT_SITE_URL || process.env.NUXT_PUBLIC_SITE_URL || '',
+      r2PublicBaseUrl:
+        process.env.R2_PUBLIC_BASE_URL || process.env.NUXT_PUBLIC_R2_PUBLIC_BASE_URL || '',
     },
     turso: {
       url: process.env.NUXT_TURSO_URL || process.env.NUXT_TURSO_DATABASE_URL || '',

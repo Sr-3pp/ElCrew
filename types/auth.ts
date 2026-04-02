@@ -1,7 +1,8 @@
 export interface registerPayload{
-    name: string
+    username: string
     email: string
     password: string
+    isTeacher: boolean
     callbackURL: string
 }
 
