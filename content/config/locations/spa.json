@@ -1,0 +1,10 @@
+{
+    "name": "Skatepark Bosque de Aragon",
+    "address": "Calle de los Picos de Europa, 28022 Madrid, Spain",
+    "coordinates": {
+        "latitude": 40.4681,
+        "longitude": -3.6172
+    },
+    "description": "Skatepark Bosque de Aragon is a popular skatepark located",
+    "picture": "https://picsum.photos/1100/400?random=1"
+}

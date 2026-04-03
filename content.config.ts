@@ -15,7 +15,10 @@ export default defineContentConfig({
     // Data collection for JSON/YAML configuration files under content/_config
     config: defineCollection({
       type: 'data',
-      source: 'config/**.{json,yml,yaml}',
+      source: {
+        include: "config/**/*.json",
+        prefix: "/config/",
+      },
       // Accept any JSON shape for config files, but keep ZodObject (required by types)
       schema: z.object({}).catchall(z.any()),
     }),

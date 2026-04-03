@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import { CalendarDate } from '@internationalized/date'
-import type { AppointmentFormPayload } from '~~/types/appointment'
+import type { Time } from '@internationalized/date'
+import type { AvailabilityFormPayload } from '~~/types/availability'
 
-defineProps<{
+const { teacherId } = defineProps<{
   isAdmin?: boolean
+  teacherId: string
 }>()
 
 const modelValue = shallowRef(new CalendarDate(2026, 3, 10))
+
+const { setSchedule } = useSchedule(teacherId)
 
 const demoAppointments: Ref<Record<string, string[]>> = ref({
   '2026-03-01': ['09:00', '12:30'],
@@ -20,6 +24,13 @@ const getAppointmentsForDay = (day: CalendarDate) => {
   return demoAppointments.value[day.toString()] ?? []
 }
 
+const formatTimeValue = (value: Time) => {
+  const hour = String(value.hour).padStart(2, '0')
+  const minute = String(value.minute).padStart(2, '0')
+
+  return `${hour}:${minute}`
+}
+
 function getColorByDate(day: CalendarDate) {
   const dayAppointments = getAppointmentsForDay(day)
 
@@ -30,14 +41,19 @@ function getColorByDate(day: CalendarDate) {
   return 'success'
 }
 
-const handleSubmit = (payload: AppointmentFormPayload) => {
-  const dayAppointments = demoAppointments.value[payload.scheduledDate] ?? []
-
-  if (dayAppointments.includes(payload.scheduledTime)) {
+const handleSubmit = (payload: AvailabilityFormPayload) => {
+  if (!payload.startTime) {
     return
   }
 
-  demoAppointments.value[payload.scheduledDate] = [...dayAppointments, payload.scheduledTime].sort((left, right) => left.localeCompare(right))
+  const startTime = formatTimeValue(payload.startTime)
+  const dayAppointments = demoAppointments.value[payload.date] ?? []
+
+  if (dayAppointments.includes(startTime)) {
+    return
+  }
+
+  setSchedule(payload)
 }
 </script>
 
@@ -50,5 +66,5 @@ section(class="py-16")
         div
           ul
             li(v-for="appointment in getAppointmentsForDay(modelValue)" :key="appointment") {{ appointment }}
-          AppointmentForm(@submit="handleSubmit" :day="modelValue")
+          AvailabilityForm(@submit="handleSubmit" :day="modelValue")
 </template>
