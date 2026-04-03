@@ -24,8 +24,8 @@ export interface AuthProfile {
     lastName: string | null
     dob: string | null
     picture: string | null
-    createdAt: string
-    updatedAt: string
+    createdAt: string | null
+    updatedAt: string | null
 }
 
 export interface AuthUser {
@@ -36,8 +36,8 @@ export interface AuthUser {
     emailVerified: boolean
     isAdmin: boolean
     isTeacher: boolean
-    createdAt: string
-    updatedAt: string
+    createdAt: string | null
+    updatedAt: string | null
     profile: AuthProfile | null
 }
 
@@ -46,8 +46,8 @@ export interface AuthSessionResponse {
         id: string
         userId: string
         expiresAt: string
-        createdAt: string
-        updatedAt: string
+        createdAt: string | null
+        updatedAt: string | null
     }
     user: AuthUser
 }

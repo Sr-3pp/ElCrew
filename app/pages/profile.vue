@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Teacher } from '~~/types/teacher'
+import { getTeacherSinceLabel, toTeacherFromSession } from '~~/app/utils/teacher-util'
 
 const { session, fetchSession, refreshSession } = useAuth()
 const { updateProfile } = useProfile()
@@ -10,27 +10,8 @@ const isPageReady = ref(false)
 
 const isTeacher = computed(() => Boolean(session.value?.isTeacher))
 
-const teacher = computed<Teacher | null>(() => {
-    if (!session.value || !session.value.isTeacher) {
-        return null
-    }
-
-    return {
-        id: session.value.id,
-        username: session.value.username || session.value.name || 'User',
-        email: session.value.email,
-        isTeacher: session.value.isTeacher,
-        name: session.value.profile?.name || null,
-        lastName: session.value.profile?.lastName || null,
-        dob: session.value.profile?.dob || null,
-        picture: session.value.profile?.picture || null,
-        quote: session.value.profile?.quote || null,
-        bio: session.value.profile?.bio || null,
-        favoriteTricks: session.value.profile?.favoriteTricks || null,
-        areaOfFocus: session.value.profile?.areaOfFocus || null,
-        contact: session.value.profile?.contact || null,
-    }
-})
+const teacher = computed(() => toTeacherFromSession(session.value))
+const teacherSinceLabel = computed(() => getTeacherSinceLabel(teacher.value))
 
 const handleTeacherSaved = async () => {
     await refreshSession()
@@ -62,7 +43,7 @@ section
                 div(class="flex flex-col gap-4 p-4 w-full")
                     p(class="flex gap-6")
                         UBadge(:label="teacher?.areaOfFocus" color="primary" size="xl" v-if="teacher?.areaOfFocus")
-                        UBadge(:label="'Instructor since ' + new Date(teacher?.createdAt || '').getFullYear()" size="xl" color="secondary")
+                        UBadge(:label="teacherSinceLabel" size="xl" color="secondary" v-if="teacherSinceLabel")
                     h2(class="text-3xl font-bold") {{ teacher?.name }} {{ teacher?.lastName }}
                     p(class="italic my-auto") "{{ teacher?.quote }}"
                     div(class="flex gap-4 mt-auto justify-end")

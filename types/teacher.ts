@@ -3,6 +3,7 @@ export type Teacher = {
   username: string;
   email: string;
   isTeacher: boolean;
+  createdAt: string | null;
   name: string | null;
   lastName: string | null;
   dob: string | null;

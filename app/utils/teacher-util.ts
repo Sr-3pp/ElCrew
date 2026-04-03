@@ -1,4 +1,5 @@
-import type { TeacherPayload } from '~~/types/teacher'
+import type { AuthUser } from '~~/types/auth'
+import type { Teacher, TeacherPayload } from '~~/types/teacher'
 
 export const toTeacherFormData = (payload: TeacherPayload) => {
     const formData = new FormData()
@@ -78,4 +79,41 @@ export const parseFavoriteTricks = (favoriteTricks: string | null | undefined) =
         .split(',')
         .map(value => value.trim())
         .filter(Boolean)
+}
+
+export const toTeacherFromSession = (user: AuthUser | null | undefined): Teacher | null => {
+    if (!user || !user.isTeacher) {
+        return null
+    }
+
+    return {
+        id: user.id,
+        username: user.username || user.name || 'User',
+        email: user.email,
+        isTeacher: user.isTeacher,
+        createdAt: user.createdAt || user.profile?.createdAt || null,
+        name: user.profile?.name || null,
+        lastName: user.profile?.lastName || null,
+        dob: user.profile?.dob || null,
+        picture: user.profile?.picture || null,
+        quote: user.profile?.quote || null,
+        bio: user.profile?.bio || null,
+        favoriteTricks: user.profile?.favoriteTricks || null,
+        areaOfFocus: user.profile?.areaOfFocus || null,
+        contact: user.profile?.contact || null,
+    }
+}
+
+export const getTeacherSinceLabel = (teacher: Teacher | null | undefined) => {
+    if (!teacher?.createdAt) {
+        return null
+    }
+
+    const year = new Date(teacher.createdAt).getFullYear()
+
+    if (Number.isNaN(year)) {
+        return null
+    }
+
+    return `Instructor since ${year}`
 }
