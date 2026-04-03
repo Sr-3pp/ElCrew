@@ -1,59 +1,11 @@
 import type { Teacher, TeacherPayload } from '~~/types/teacher'
+import { toTeacherFormData } from '~~/app/utils/teacher-util'
 
 
 export const useTeachers = () => {
-    const toTeacherFormData = (payload: TeacherPayload) => {
-        const formData = new FormData()
-
-        formData.append('username', payload.username)
-        formData.append('email', payload.email)
-
-        if (payload.password) {
-            formData.append('password', payload.password)
-        }
-
-        formData.append('name', payload.name)
-        formData.append('lastName', payload.lastName)
-        formData.append('dob', payload.dob)
-
-        if (payload.quote) {
-            formData.append('quote', payload.quote)
-        }
-
-        if (payload.bio) {
-            formData.append('bio', payload.bio)
-        }
-
-        if (payload.favoriteTricks) {
-            formData.append('favoriteTricks', payload.favoriteTricks)
-        }
-
-        if (payload.areaOfFocus) {
-            formData.append('areaOfFocus', payload.areaOfFocus)
-        }
-
-        if (payload.contact) {
-            formData.append('contact', payload.contact)
-        }
-
-        const picture = Array.isArray(payload.picture) ? payload.picture[0] : payload.picture
-
-        if (picture instanceof File) {
-            formData.append('picture', picture)
-        }
-
-        return formData
-    }
-
     const getTeachers = async () => {
-        return $fetch<Teacher[]>('/api/teachers', {
+        return $fetch<Teacher[]>('/api/admin/teachers', {
             credentials: 'include'
-        })
-    }
-
-    const getCurrentTeacher = async () => {
-        return $fetch<Teacher>('/api/profile/teacher', {
-            credentials: 'include',
         })
     }
 
@@ -73,14 +25,6 @@ export const useTeachers = () => {
         })
     }
 
-    const updateCurrentTeacher = async (payload: TeacherPayload) => {
-        return $fetch<Teacher>('/api/profile/teacher', {
-            method: 'PATCH',
-            body: toTeacherFormData(payload),
-            credentials: 'include',
-        })
-    }
-
     const deleteTeacher = async (id: string) => {
         return $fetch<{ id: string }>(`/api/admin/teachers/${id}`, {
             method: 'DELETE',
@@ -90,10 +34,8 @@ export const useTeachers = () => {
 
     return {
         getTeachers,
-        getCurrentTeacher,
         createTeacher,
         updateTeacher,
-        updateCurrentTeacher,
         deleteTeacher,
     }
 }

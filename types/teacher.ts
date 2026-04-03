@@ -28,3 +28,17 @@ export type TeacherPayload = {
   areaOfFocus?: string;
   contact?: string;
 };
+
+export type TeacherContactFields = {
+  whatsapp: string;
+  instagram: string;
+  tiktok: string;
+};
+
+export type TeacherFormState = Omit<TeacherPayload, 'contact' | 'favoriteTricks'> & TeacherContactFields & {
+  picture: File | File[] | null;
+  quote: string;
+  bio: string;
+  favoriteTricks: string[];
+  areaOfFocus: string;
+};

@@ -1,7 +1,3 @@
-import { tables, useDrizzle } from '~~/server/utils/drizzle';
-import { ensureProfileSchema } from '~~/server/utils/profile-schema';
-import { isAdmin } from '~~/server/utils/requireSession';
-import { readTeacherForm, uploadTeacherPicture } from '~~/server/utils/teacher-form';
 
 export default defineEventHandler(async (event) => {
   if (!(await isAdmin(event))) {

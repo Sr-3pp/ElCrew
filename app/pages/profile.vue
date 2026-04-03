@@ -2,7 +2,7 @@
 import type { Teacher } from '~~/types/teacher'
 
 const { session, fetchSession, refreshSession } = useAuth()
-const { updateCurrentTeacher } = useTeachers()
+const { updateProfile } = useProfile()
 
 const isScheduleModalOpen = ref(false)
 const isFormOpen = ref(false)
@@ -127,7 +127,7 @@ section
             TeacherForm(
                 v-if="teacher"
                 :teacher="teacher"
-                :submit-teacher="updateCurrentTeacher"
+                :submit-teacher="updateProfile"
                 @saved="handleTeacherSaved"
             )
             p.text-sm.text-error(v-else) Unable to load teacher information.

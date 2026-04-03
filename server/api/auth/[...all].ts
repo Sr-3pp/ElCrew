@@ -1,7 +1,5 @@
 import type { H3Event } from 'h3';
 
-import { useAuth } from '../../utils/auth';
-
 const METHODS_WITHOUT_BODY = new Set(['GET', 'HEAD']);
 
 async function eventToRequest(event: H3Event) {
