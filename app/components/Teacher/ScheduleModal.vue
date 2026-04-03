@@ -10,7 +10,7 @@ const { teacherId } = defineProps<{
 
 const modelValue = shallowRef(new CalendarDate(2026, 3, 10))
 
-const { setSchedule } = useSchedule(teacherId)
+const { saveSchedule } = useSchedule(teacherId)
 
 const demoAppointments: Ref<Record<string, string[]>> = ref({
   '2026-03-01': ['09:00', '12:30'],
@@ -53,7 +53,7 @@ const handleSubmit = (payload: AvailabilityFormPayload) => {
     return
   }
 
-  setSchedule(payload)
+  saveSchedule(payload)
 }
 </script>
 

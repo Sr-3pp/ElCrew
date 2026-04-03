@@ -121,7 +121,7 @@ section
 
     UDrawer(v-if="isPageReady && isTeacher" side="bottom" v-model:open="isScheduleModalOpen" title="Schedule a class" description="Schedule a class with this teacher" trigger="Schedule a class")
         template(#body)
-            TeacherScheduleModal
+            TeacherScheduleModal(:teacher-id="teacher?.id")
     UModal(v-if="isPageReady && isTeacher" v-model:open="isFormOpen" title="Edit Teacher Profile" description="Edit the profile of this teacher" trigger="Edit Teacher Profile")
         template(#body)
             TeacherForm(
