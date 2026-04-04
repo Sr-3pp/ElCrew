@@ -1,19 +1,9 @@
 <script setup lang="ts">
 import * as v from 'valibot';
 import type { FormSubmitEvent } from '@nuxt/ui';
-import type { Teacher, TeacherPayload } from '~~/types/teacher';
+import type { Teacher, TeacherFormState, TeacherPayload } from '~~/types/teacher';
 import { generatePassword } from '~~/app/utils/generate-password';
-
-type TeacherFormState = Omit<TeacherPayload, 'contact' | 'favoriteTricks'> & {
-    picture: File | File[] | null;
-    quote: string;
-    bio: string;
-    favoriteTricks: string[];
-    areaOfFocus: string;
-    whatsapp: string;
-    instagram: string;
-    tiktok: string;
-};
+import { parseContact, parseFavoriteTricks } from '~~/app/utils/teacher-util';
 
 const props = defineProps<{
     teacher?: Teacher | null;
@@ -92,43 +82,6 @@ const teacherState = reactive<TeacherFormState>({
     instagram: '',
     tiktok: '',
 })
-
-const parseContact = (contact: string | null | undefined) => {
-    if (!contact) {
-        return {
-            whatsapp: '',
-            instagram: '',
-            tiktok: '',
-        }
-    }
-
-    try {
-        const parsed = JSON.parse(contact) as Record<string, unknown>
-
-        return {
-            whatsapp: typeof parsed.whatsapp === 'string' ? parsed.whatsapp : '',
-            instagram: typeof parsed.instagram === 'string' ? parsed.instagram : '',
-            tiktok: typeof parsed.tiktok === 'string' ? parsed.tiktok : '',
-        }
-    } catch {
-        return {
-            whatsapp: '',
-            instagram: '',
-            tiktok: '',
-        }
-    }
-}
-
-const parseFavoriteTricks = (favoriteTricks: string | null | undefined) => {
-    if (!favoriteTricks) {
-        return []
-    }
-
-    return favoriteTricks
-        .split(',')
-        .map(value => value.trim())
-        .filter(Boolean)
-}
 
 const resetTeacherState = () => {
     const contact = parseContact(props.teacher?.contact)

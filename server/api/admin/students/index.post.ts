@@ -1,5 +1,3 @@
-import { tables, useDrizzle } from '~~/server/utils/drizzle';
-import { isAdmin } from '~~/server/utils/requireSession';
 import type { StudentPayload } from '~~/types/student';
 
 export default defineEventHandler(async (event) => {

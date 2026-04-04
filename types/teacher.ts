@@ -3,6 +3,7 @@ export type Teacher = {
   username: string;
   email: string;
   isTeacher: boolean;
+  createdAt: string | null;
   name: string | null;
   lastName: string | null;
   dob: string | null;
@@ -27,4 +28,18 @@ export type TeacherPayload = {
   favoriteTricks?: string;
   areaOfFocus?: string;
   contact?: string;
+};
+
+export type TeacherContactFields = {
+  whatsapp: string;
+  instagram: string;
+  tiktok: string;
+};
+
+export type TeacherFormState = Omit<TeacherPayload, 'contact' | 'favoriteTricks'> & TeacherContactFields & {
+  picture: File | File[] | null;
+  quote: string;
+  bio: string;
+  favoriteTricks: string[];
+  areaOfFocus: string;
 };

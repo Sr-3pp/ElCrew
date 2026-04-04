@@ -45,6 +45,8 @@ const authItems = computed(() => {
     }
   ]
 })
+
+const { isOpen: bookModal, toggleModal: toggleBookModal } = useModal('book')
 </script>
 
 <template lang="pug">
@@ -58,7 +60,7 @@ header
         li(v-for="item in navItems" :key="`nav-item${item.label}`")
           NuxtLink(:to="item.path") {{ item.title }}
       div.flex.gap-4.items-center
-        UButton(icon="i-lucide-calendar" color="neutral" size="sm") Book a demo
+        UButton(icon="i-lucide-calendar" color="neutral" size="sm" @click="toggleBookModal()") Programar Clase
         UDropdownMenu(v-if="session" :items="authItems" :ui="{ item: 'items-center'}")
           UButton(icon="i-lucide-menu" color="neutral" variant="outline")
         UButton(v-else @click="navigateTo('/login')") Login

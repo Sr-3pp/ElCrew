@@ -8,6 +8,20 @@
       "when": 1774897319427,
       "tag": "0000_left_argent",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1775253482990,
+      "tag": "0001_fuzzy_carlie_cooper",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1775254564971,
+      "tag": "0002_breezy_pride",
+      "breakpoints": true
     }
   ]
 }
