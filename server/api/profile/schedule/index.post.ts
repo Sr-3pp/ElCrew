@@ -30,7 +30,6 @@ export default defineEventHandler(async (event) => {
         placement: body.placement,
         scheduledDate: body.date,
         scheduledTime: toScheduledTimeString(body.time),
-        durationMinutes: body.durationMinutes,
         notes: body.notes,
     }).returning()
 

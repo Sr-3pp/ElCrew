@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { getLocalTimeZone, today } from '@internationalized/date'
 import type { CalendarDate } from '@internationalized/date'
-import type { ScheduleForm, ScheduleItem } from '~~/types/schedule'
+import type { ScheduleBatchSubmitPayload, ScheduleItem } from '~~/types/schedule'
 
 const { teacherId } = defineProps<{
   isAdmin?: boolean
@@ -36,17 +36,19 @@ const getDayColor = (day: CalendarDate) => {
   return hasAppointmentsOnDay(day) ? 'success' : undefined
 }
 
-const handleSubmit = async (payload: ScheduleForm) => {
-  if (!payload.time) {
+const handleSubmit = async (payload: ScheduleBatchSubmitPayload) => {
+  const schedulesToCreate = payload.times
+    .map(time => ({
+      ...payload,
+      time,
+    }))
+    .filter(schedule => !isTimeBooked(schedule.date, formatScheduleTime(schedule.time)))
+
+  if (schedulesToCreate.length === 0) {
     return
   }
 
-  const formattedTime = formatScheduleTime(payload.time)
-  if (isTimeBooked(payload.date, formattedTime)) {
-    return
-  }
-
-  await saveSchedule(payload)
+  await Promise.all(schedulesToCreate.map(schedule => saveSchedule(schedule)))
   await refreshSchedule()
 }
 
@@ -72,8 +74,7 @@ section.py-16
                 ul(class="space-y-3")
                     li(v-for="appointment in currentDaySchedule.appointments" :key="appointment.id" class="flex items-start justify-between gap-4 rounded-2xl bg-default p-4")
                         div(class="space-y-1")
-                            p(class="font-medium") {{ appointment.scheduledTime }}
-                            p(class="text-sm text-muted") {{ appointment.durationMinutes }} minutes
+                            p(class="font-medium") {{ formatScheduleTimeLabel(appointment.scheduledTime) }}
                             p(v-if="appointment.notes" class="text-sm text-muted") {{ appointment.notes }}
                         UButton(icon="i-lucide-trash-2" color="error" variant="ghost" @click="handleDelete(appointment)")
             UCard(v-else variant="soft")

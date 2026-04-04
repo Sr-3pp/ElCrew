@@ -4,6 +4,7 @@ import type { Ref } from 'vue'
 import type {
   CreateSchedulePayload,
   DeleteSchedulePayload,
+  ScheduleBatchForm,
   ScheduleByDate,
   ScheduleDay,
   ScheduleForm,
@@ -17,12 +18,22 @@ export const createScheduleFormState = (): ScheduleForm => ({
   placement: '',
   date: '',
   time: null,
-  durationMinutes: 60,
+  notes: '',
+})
+
+export const createScheduleBatchFormState = (): ScheduleBatchForm => ({
+  placement: '',
+  date: '',
+  times: [null],
   notes: '',
 })
 
 export const hasScheduleTimeValue = (value: unknown): value is Time => {
   return typeof value === 'object' && value !== null && 'hour' in value && 'minute' in value
+}
+
+export const getValidScheduleTimes = (values: unknown[]) => {
+  return values.filter(hasScheduleTimeValue)
 }
 
 export const formatScheduleTime = (value: Time | null | undefined) => {
@@ -34,6 +45,20 @@ export const formatScheduleTime = (value: Time | null | undefined) => {
   const minute = String(value.minute).padStart(2, '0')
 
   return `${hour}:${minute}`
+}
+
+export const formatScheduleTimeLabel = (value: string, locale = 'en-US') => {
+  const [hour, minute] = value.split(':').map(Number)
+
+  if (!Number.isInteger(hour) || !Number.isInteger(minute)) {
+    return value
+  }
+
+  return new Date(2000, 0, 1, hour, minute).toLocaleTimeString(locale, {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+  })
 }
 
 export const formatScheduleDate = (date: string, locale = 'es-MX') => {
@@ -52,6 +77,21 @@ export const formatScheduleDate = (date: string, locale = 'es-MX') => {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
+  })
+}
+
+export const getUniqueScheduleTimes = (times: Time[]) => {
+  const seen = new Set<string>()
+
+  return times.filter((time) => {
+    const formattedTime = formatScheduleTime(time)
+
+    if (seen.has(formattedTime)) {
+      return false
+    }
+
+    seen.add(formattedTime)
+    return true
   })
 }
 

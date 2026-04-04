@@ -4,7 +4,20 @@ export type ScheduleForm = {
   placement: string
   date: string
   time: Time | null
-  durationMinutes: number
+  notes: string
+}
+
+export type ScheduleBatchForm = {
+  placement: string
+  date: string
+  times: Array<Time | null>
+  notes: string
+}
+
+export type ScheduleBatchSubmitPayload = {
+  placement: string
+  date: string
+  times: Time[]
   notes: string
 }
 

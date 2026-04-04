@@ -2,14 +2,14 @@
 import type { CalendarDate } from '@internationalized/date'
 import type { FormSubmitEvent } from '@nuxt/ui'
 import * as v from 'valibot'
-import type { ScheduleForm } from '~~/types/schedule'
+import type { ScheduleBatchForm, ScheduleBatchSubmitPayload } from '~~/types/schedule'
 
 const props = defineProps<{
   day: CalendarDate
 }>()
 
 const emit = defineEmits<{
-  submit: [payload: ScheduleForm]
+  submit: [payload: ScheduleBatchSubmitPayload]
 }>()
 
 const { locationOptions } = useScheduleLocations()
@@ -20,36 +20,46 @@ const scheduleSchema = v.object({
     v.trim(),
     v.minLength(2, 'Placement must be at least 2 characters'),
   ),
-  time: v.pipe(
-    v.unknown(),
-    v.check(hasScheduleTimeValue, 'Class time is required'),
-  ),
-  durationMinutes: v.pipe(
-    v.number(),
-    v.minValue(15, 'Duration must be at least 15 minutes'),
+  times: v.pipe(
+    v.array(v.union([v.null(), v.unknown()])),
+    v.check((value) => getValidScheduleTimes(value).length > 0, 'At least one class time is required'),
   ),
   notes: v.optional(v.string()),
 })
 
-const scheduleState = reactive<ScheduleForm>(createScheduleFormState())
+const scheduleState = reactive<ScheduleBatchForm>(createScheduleBatchFormState())
 
 const selectedDate = computed(() => props.day.toString())
 const selectedDateLabel = computed(() => formatScheduleDate(selectedDate.value))
 
 const resetForm = () => {
-  Object.assign(scheduleState, createScheduleFormState())
+  Object.assign(scheduleState, createScheduleBatchFormState())
 }
 
-const handleSubmit = (event: FormSubmitEvent<ScheduleForm>) => {
-  if (!event.data.time) {
+const addTimeField = () => {
+  scheduleState.times.push(null)
+}
+
+const removeTimeField = (index: number) => {
+  if (scheduleState.times.length === 1) {
+    scheduleState.times[0] = null
+    return
+  }
+
+  scheduleState.times.splice(index, 1)
+}
+
+const handleSubmit = (event: FormSubmitEvent<ScheduleBatchForm>) => {
+  const times = getUniqueScheduleTimes(getValidScheduleTimes(event.data.times))
+
+  if (times.length === 0) {
     return
   }
 
   emit('submit', {
     placement: event.data.placement.trim(),
     date: selectedDate.value,
-    time: event.data.time,
-    durationMinutes: event.data.durationMinutes,
+    times,
     notes: event.data.notes.trim(),
   })
 
@@ -63,10 +73,12 @@ UForm(:schema="scheduleSchema" :state="scheduleState" @submit="handleSubmit" cla
         UInput(:model-value="selectedDateLabel" readonly)
     UFormField(label="Placement" name="placement")
         USelect(v-model="scheduleState.placement" :items="locationOptions" class="w-full")
-    UFormField(label="Class time" name="time")
-        UInputTime(v-model="scheduleState.time" class="w-full")
-    UFormField(label="Duration (minutes)" name="durationMinutes")
-        UInput(v-model.number="scheduleState.durationMinutes" type="number" min="15" step="15" class="w-full")
+    UFormField(label="Class times" name="times" class="col-span-full")
+        .space-y-3
+            .flex.items-center.gap-3(v-for="(_, index) in scheduleState.times" :key="index")
+                UInputTime(v-model="scheduleState.times[index]" class="flex-1")
+                UButton(icon="i-lucide-trash-2" color="error" variant="ghost" type="button" @click="removeTimeField(index)")
+            UButton(type="button" variant="soft" icon="i-lucide-plus" @click="addTimeField") Add another time
     UFormField(label="Notes" name="notes" class="col-span-full")
         UTextarea(v-model="scheduleState.notes" placeholder="Optional details for the appointment" class="w-full")
     UButton(type="submit" variant="outline" label="Schedule a class" trailing-icon="i-lucide-calendar-plus" class="sm:col-start-2 sm:justify-self-end")
