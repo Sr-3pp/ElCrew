@@ -34,6 +34,7 @@ const scheduleSchema = v.object({
 const scheduleState = reactive<ScheduleForm>(createScheduleFormState())
 
 const selectedDate = computed(() => props.day.toString())
+const selectedDateLabel = computed(() => formatScheduleDate(selectedDate.value))
 
 const resetForm = () => {
   Object.assign(scheduleState, createScheduleFormState())
@@ -59,7 +60,7 @@ const handleSubmit = (event: FormSubmitEvent<ScheduleForm>) => {
 <template lang="pug">
 UForm(:schema="scheduleSchema" :state="scheduleState" @submit="handleSubmit" class="grid grid-cols-1 gap-4 rounded-3xl bg-gradient-to-br from-elevated to-muted p-4 sm:grid-cols-2")
     UFormField(label="Selected day" name="scheduledDate" class="col-span-full")
-        UInput(:model-value="selectedDate" readonly)
+        UInput(:model-value="selectedDateLabel" readonly)
     UFormField(label="Placement" name="placement")
         USelect(v-model="scheduleState.placement" :items="locationOptions" class="w-full")
     UFormField(label="Class time" name="time")

@@ -9,6 +9,7 @@ const { teacherId } = defineProps<{
 }>()
 
 const selectedDate = shallowRef(today(getLocalTimeZone()))
+const { getLocationLabel } = useScheduleLocations()
 
 const {
   saveSchedule,
@@ -23,6 +24,13 @@ const {
   hasAppointmentsOnDay,
   isTimeBooked,
 } = useScheduleCalendar(schedule, selectedDate)
+
+const selectedDateLabel = computed(() => formatScheduleDate(selectedDate.value.toString()))
+const currentPlacementLabel = computed(() => {
+  return currentDaySchedule.value.placement
+    ? getLocationLabel(currentDaySchedule.value.placement)
+    : 'No location selected for this day yet.'
+})
 
 const getDayColor = (day: CalendarDate) => {
   return hasAppointmentsOnDay(day) ? 'success' : undefined
@@ -56,9 +64,8 @@ section.py-16
                 UChip(:show="!!getDayColor(day)" :color="getDayColor(day)" size="2xs") {{ day.day }}
         div(class="flex-1 space-y-6")
             div
-                h2(class="text-2xl font-semibold") {{ currentDaySchedule.date || selectedDate.toString() }}
-                p(class="text-sm text-muted")
-                    | {{ currentDaySchedule.placement || 'No placement selected for this day yet.' }}
+                h2(class="text-2xl font-semibold") {{ selectedDateLabel }}
+                p(class="text-sm text-muted") {{ currentPlacementLabel }}
             UCard(v-if="currentDaySchedule.appointments.length" variant="soft")
                 template(#header)
                     h3(class="text-lg font-semibold") Scheduled classes

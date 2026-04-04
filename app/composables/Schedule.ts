@@ -36,6 +36,25 @@ export const formatScheduleTime = (value: Time | null | undefined) => {
   return `${hour}:${minute}`
 }
 
+export const formatScheduleDate = (date: string, locale = 'es-MX') => {
+  if (!date) {
+    return ''
+  }
+
+  const [year, month, day] = date.split('-').map(Number)
+
+  if (!year || !month || !day) {
+    return date
+  }
+
+  return new Date(year, month - 1, day).toLocaleDateString(locale, {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  })
+}
+
 export const createEmptyScheduleDay = (date = ''): ScheduleDay => ({
   date,
   placement: '',
@@ -94,8 +113,13 @@ export const useScheduleLocations = () => {
     }) ?? []
   })
 
+  const getLocationLabel = (value: string) => {
+    return locationOptions.value.find(option => option.value === value)?.label ?? value
+  }
+
   return {
     locationOptions,
+    getLocationLabel,
   }
 }
 
