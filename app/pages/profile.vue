@@ -1,8 +1,8 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import { getTeacherSinceLabel, toTeacherFromSession } from '~~/app/utils/teacher-util'
 
 const { session, fetchSession, refreshSession } = useAuth()
-const { updateProfile } = useProfile()
+const { updateProfile: submitTeacherProfile } = useProfile()
 
 const isScheduleModalOpen = ref(false)
 const isFormOpen = ref(false)
@@ -108,7 +108,7 @@ section
             TeacherForm(
                 v-if="teacher"
                 :teacher="teacher"
-                :submit-teacher="updateProfile"
+                :submit-teacher="submitTeacherProfile"
                 @saved="handleTeacherSaved"
             )
             p.text-sm.text-error(v-else) Unable to load teacher information.

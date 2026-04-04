@@ -1,6 +1,6 @@
 
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import * as v from 'valibot'
 import type { FormSubmitEvent } from '@nuxt/ui'
 

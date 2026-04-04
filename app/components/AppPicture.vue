@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import type PictureProps from '~~/types/componentns/picure';
 
 defineProps<{

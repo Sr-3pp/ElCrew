@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { isOpen: bookModal, toggleModal: toggleBookModal } = useModal('book')
+useModal('book')
 </script>
 
 <template lang="pug">
