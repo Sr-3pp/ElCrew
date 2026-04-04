@@ -1,4 +1,6 @@
 
+import type { UpdateSchedulePayload } from '~~/types/schedule'
+
 export default defineEventHandler(async (event) => {
     const session = await requireTeacherSession(event);
     const teacherId = session.user.id;
@@ -10,15 +12,15 @@ export default defineEventHandler(async (event) => {
         })
     }
 
-    const body = await readBody<{ id: string, time: string }>(event)
-
-    console.log('Updating schedule with id:', body.id, 'to new time:', body.time)
+    const body = await readBody<UpdateSchedulePayload>(event)
 
     const db = useDrizzle()
-    await db.delete(tables.Schedule)
+    await db.update(tables.Schedule)
+            .set({ scheduledTime: body.time })
             .where(
                 and(
-                    eq(tables.Schedule.id, body.id)
+                    eq(tables.Schedule.id, body.id),
+                    eq(tables.Schedule.teacherId, teacherId)
                 )
             )
 

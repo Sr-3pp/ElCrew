@@ -1,6 +1,6 @@
-import type { ScheduleForm } from '~~/types/schedule'
+import type { CreateSchedulePayload } from '~~/types/schedule'
 
-const toScheduledTimeString = (value: ScheduleForm['time']) => {
+const toScheduledTimeString = (value: CreateSchedulePayload['time']) => {
     if (!value) {
         return '00:00'
     }
@@ -22,10 +22,10 @@ export default defineEventHandler(async (event) => {
         })
     }
 
-    const body = await readBody<ScheduleForm>(event)
+    const body = await readBody<CreateSchedulePayload>(event)
 
     const db = useDrizzle()
-    const newSchedule = await db.insert(tables.Schedule).values({
+    const [newSchedule] = await db.insert(tables.Schedule).values({
         teacherId,
         placement: body.placement,
         scheduledDate: body.date,

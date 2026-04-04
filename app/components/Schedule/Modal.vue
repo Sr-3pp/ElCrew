@@ -1,104 +1,76 @@
 <script setup lang="ts">
-import { CalendarDate } from '@internationalized/date'
-import type { Time } from '@internationalized/date'
-import type { ScheduleForm } from '~~/types/schedule'
+import { getLocalTimeZone, today } from '@internationalized/date'
+import type { CalendarDate } from '@internationalized/date'
+import type { ScheduleForm, ScheduleItem } from '~~/types/schedule'
 
 const { teacherId } = defineProps<{
   isAdmin?: boolean
   teacherId: string
 }>()
 
-const modelValue = shallowRef(new CalendarDate(2026, 3, 10))
+const selectedDate = shallowRef(today(getLocalTimeZone()))
 
-const { saveSchedule, getSchedule, deleteSchedule, updateSchedule } = useSchedule(teacherId)
+const {
+  saveSchedule,
+  deleteSchedule,
+  useScheduleData,
+} = useSchedule(teacherId)
 
-const { data: schedule, refresh: refreshSchedule } = await useAsyncData('schedule', () => getSchedule())
+const { data: schedule, refresh: refreshSchedule, pending: isLoadingSchedule } = await useScheduleData()
 
-const scheduleDates = computed<Record<string, { id: string, time: string[] }>>(() => {
-  if (!schedule.value) {
-    return {}
-  }
+const {
+  currentDaySchedule,
+  hasAppointmentsOnDay,
+  isTimeBooked,
+} = useScheduleCalendar(schedule, selectedDate)
 
-  return schedule.value.reduce<Record<string, { id: string, time: string[] }>>((appointmentsByDate, item) => {
-    const [year, month, day] = item.scheduledDate.split('-').map(Number)
-    const key = `${year?.toString()}-${month?.toString().padStart(2, '0')}-${day?.toString().padStart(2, '0')}`
-
-    if (appointmentsByDate[key]) {
-      appointmentsByDate[key]!.time.push(item.scheduledTime)
-    } else {
-      appointmentsByDate[key] = {
-        id: item.id,
-        time: [item.scheduledTime]
-      }
-    }
-
-    return appointmentsByDate
-  }, {})
-})
-
-console.log(scheduleDates.value)
-
-const getAppointmentsForDay = (day: CalendarDate) => {
-  return scheduleDates.value[day.toString()] ?? { id: '', time: [] }
+const getDayColor = (day: CalendarDate) => {
+  return hasAppointmentsOnDay(day) ? 'success' : undefined
 }
 
-const formatTimeValue = (value: Time) => {
-  const hour = String(value.hour).padStart(2, '0')
-  const minute = String(value.minute).padStart(2, '0')
-
-  return `${hour}:${minute}`
-}
-
-function getColorByDate(day: CalendarDate) {
-  const dayAppointments = getAppointmentsForDay(day)
-
-  if (dayAppointments.time.length === 0) {
-    return undefined
-  }
-
-  return 'success'
-}
-
-const handleSubmit = (payload: ScheduleForm) => {
+const handleSubmit = async (payload: ScheduleForm) => {
   if (!payload.time) {
     return
   }
 
-  const startTime = formatTimeValue(payload.time)
-  const dayAppointments = scheduleDates.value[payload.date] ?? { id: '', time: [] }
-
-  if (dayAppointments.time.includes(startTime)) {
+  const formattedTime = formatScheduleTime(payload.time)
+  if (isTimeBooked(payload.date, formattedTime)) {
     return
   }
 
-  saveSchedule(payload)
-}
-
-const handleDelete = async (payload: { date: string, time: string }) => {
-  await deleteSchedule(payload)
+  await saveSchedule(payload)
   await refreshSchedule()
 }
 
-const handleDeleteTime = async (payload: { id: string, appointment: { id: string, time: string[] }, timeIdx: number }) => {
-  const newTime = payload.appointment.time.splice(payload.timeIdx, 1)
-  await updateSchedule({ id: payload.id, time: newTime.join(',') })
+const handleDelete = async (appointment: ScheduleItem) => {
+  await deleteSchedule({ id: appointment.id })
   await refreshSchedule()
 }
 </script>
 
 <template lang="pug">
-section(class="py-16")
-    UContainer(class="flex flex-col sm:flex-row items-center gap-8 sm:gap-10")
-        UCalendar(class="" v-model="modelValue" variant="subtle")
-          template(#day="{ day }")
-            UChip(:show="!!getColorByDate(day)" :color="getColorByDate(day)" size="2xs") {{ day.day }}
-        div
-          ul
-            li(v-for="(appointment, date) in scheduleDates" :key="date")
-              ol
-                li(v-for="time in appointment.time" :key="time" class="flex items-center gap-2")
-                  span {{time}}
-                  UButton(@click="handleDeleteTime({ id: appointment.id, appointment, time })" size="xs" color="error" icon="i-lucide-trash")
-              UButton(@click="handleDelete({ date: modelValue.toString(), time: appointment.time })" size="xs" color="error" icon="i-lucide-trash" class="ml-2")
-          ScheduleForm(@submit="handleSubmit" :day="modelValue")
+section.py-16
+    UContainer(class="flex flex-col gap-8 sm:flex-row sm:items-start sm:gap-10")
+        UCalendar(v-model="selectedDate" variant="subtle")
+            template(#day="{ day }")
+                UChip(:show="!!getDayColor(day)" :color="getDayColor(day)" size="2xs") {{ day.day }}
+        div(class="flex-1 space-y-6")
+            div
+                h2(class="text-2xl font-semibold") {{ currentDaySchedule.date || selectedDate.toString() }}
+                p(class="text-sm text-muted")
+                    | {{ currentDaySchedule.placement || 'No placement selected for this day yet.' }}
+            UCard(v-if="currentDaySchedule.appointments.length" variant="soft")
+                template(#header)
+                    h3(class="text-lg font-semibold") Scheduled classes
+                ul(class="space-y-3")
+                    li(v-for="appointment in currentDaySchedule.appointments" :key="appointment.id" class="flex items-start justify-between gap-4 rounded-2xl bg-default p-4")
+                        div(class="space-y-1")
+                            p(class="font-medium") {{ appointment.scheduledTime }}
+                            p(class="text-sm text-muted") {{ appointment.durationMinutes }} minutes
+                            p(v-if="appointment.notes" class="text-sm text-muted") {{ appointment.notes }}
+                        UButton(icon="i-lucide-trash-2" color="error" variant="ghost" @click="handleDelete(appointment)")
+            UCard(v-else variant="soft")
+                p(class="text-sm text-muted") No classes scheduled for this day.
+            ScheduleForm(:day="selectedDate" @submit="handleSubmit")
+            p(v-if="isLoadingSchedule" class="text-sm text-muted") Loading schedule...
 </template>
