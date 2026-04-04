@@ -1,6 +1,6 @@
-import type { CreateSchedulePayload } from '~~/types/schedule'
+import type { CreateClassSlotPayload } from '~~/types/class-slot'
 
-const toScheduledTimeString = (value: CreateSchedulePayload['time']) => {
+const toScheduledTimeString = (value: CreateClassSlotPayload['time']) => {
     if (!value) {
         return '00:00'
     }
@@ -22,10 +22,10 @@ export default defineEventHandler(async (event) => {
         })
     }
 
-    const body = await readBody<CreateSchedulePayload>(event)
+    const body = await readBody<CreateClassSlotPayload>(event)
 
     const db = useDrizzle()
-    const [newSchedule] = await db.insert(tables.Schedule).values({
+    const [newClassSlot] = await db.insert(tables.ClassSlot).values({
         teacherId,
         placement: body.placement,
         scheduledDate: body.date,
@@ -33,5 +33,5 @@ export default defineEventHandler(async (event) => {
         notes: body.notes,
     }).returning()
 
-    return newSchedule
+    return newClassSlot
 })

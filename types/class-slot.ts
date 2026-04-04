@@ -1,27 +1,27 @@
 import type { Time } from '@internationalized/date'
 
-export type ScheduleForm = {
+export type ClassSlotForm = {
   placement: string
   date: string
   time: Time | null
   notes: string
 }
 
-export type ScheduleBatchForm = {
+export type ClassSlotBatchForm = {
   placement: string
   date: string
   times: Array<Time | null>
   notes: string
 }
 
-export type ScheduleBatchSubmitPayload = {
+export type ClassSlotBatchSubmitPayload = {
   placement: string
   date: string
   times: Time[]
   notes: string
 }
 
-export type ScheduleItem = {
+export type ClassSlotItem = {
   id: string
   teacherId: string
   placement: string
@@ -34,30 +34,30 @@ export type ScheduleItem = {
   updatedAt: string
 }
 
-export type ScheduleDay = {
+export type ClassSlotDay = {
   date: string
   placement: string
-  appointments: ScheduleItem[]
+  appointments: ClassSlotItem[]
 }
 
-export type ScheduleByDate = Record<string, ScheduleDay>
+export type ClassSlotByDate = Record<string, ClassSlotDay>
 
-export type ScheduleLocationOption = {
+export type ClassSlotLocationOption = {
   label: string
   value: string
 }
 
-export type CreateSchedulePayload = ScheduleForm
+export type CreateClassSlotPayload = ClassSlotForm
 
-export type UpdateSchedulePayload = {
+export type UpdateClassSlotPayload = {
   id: string
   time: string
 }
 
-export type DeleteSchedulePayload = {
+export type DeleteClassSlotPayload = {
   id: string
 }
 
-export type ScheduleMutationResult = {
+export type ClassSlotMutationResult = {
   success: boolean
 }

@@ -10,9 +10,9 @@ export default defineEventHandler(async (event) => {
     }
 
     const db = useDrizzle()
-    const teacherAppointments = await db.select()
-                                        .from(tables.Schedule)
-                                        .where(eq(tables.Schedule.teacherId, teacherId))
+    const teacherClassSlots = await db.select()
+                                        .from(tables.ClassSlot)
+                                        .where(eq(tables.ClassSlot.teacherId, teacherId))
 
-    return teacherAppointments
+    return teacherClassSlots
 })

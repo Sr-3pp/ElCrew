@@ -1,4 +1,4 @@
-import type { DeleteSchedulePayload } from '~~/types/schedule'
+import type { UpdateClassSlotPayload } from '~~/types/class-slot'
 
 export default defineEventHandler(async (event) => {
     const session = await requireTeacherSession(event);
@@ -11,14 +11,15 @@ export default defineEventHandler(async (event) => {
         })
     }
 
-    const body = await readBody<DeleteSchedulePayload>(event)
+    const body = await readBody<UpdateClassSlotPayload>(event)
 
     const db = useDrizzle()
-    await db.delete(tables.Schedule)
+    await db.update(tables.ClassSlot)
+            .set({ scheduledTime: body.time })
             .where(
                 and(
-                    eq(tables.Schedule.teacherId, teacherId),
-                    eq(tables.Schedule.id, body.id)
+                    eq(tables.ClassSlot.id, body.id),
+                    eq(tables.ClassSlot.teacherId, teacherId)
                 )
             )
 
