@@ -3,7 +3,7 @@ import { Time } from '@internationalized/date'
 import type { CalendarDate } from '@internationalized/date'
 import type { FormSubmitEvent } from '@nuxt/ui'
 import * as v from 'valibot'
-import type { AvailabilityFormPayload, AvailabilityFormState } from '~~/types/availability'
+import type { ScheduleForm } from '~~/types/schedule'
 
 const props = defineProps<{
     day: CalendarDate;
@@ -15,13 +15,13 @@ const locationOptions = computed(() => {
     return locatinos.value
         ? locatinos.value.map(location => ({
             label: location.meta.name,
-            value: location.meta.name,
+            value: location.meta.key,
         }))
         : []
 })
 
 const emit = defineEmits<{
-    submit: [payload: AvailabilityFormPayload];
+    submit: [payload: ScheduleForm];
 }>()
 
 const hasTimeValue = (value: unknown): value is Time => {
@@ -38,15 +38,15 @@ const addMinutesToTime = (value: Time, minutesToAdd: number) => {
     )
 }
 
-const availabilitySchema = v.object({
+const scheduleSchema = v.object({
     placement: v.pipe(
         v.string(),
         v.trim(),
         v.minLength(2, 'Placement must be at least 2 characters')
     ),
-    startTime: v.pipe(
+    time: v.pipe(
         v.unknown(),
-        v.check(hasTimeValue, 'Start time is required')
+        v.check(hasTimeValue, 'Class time is required')
     ),
     durationMinutes: v.pipe(
         v.number(),
@@ -55,48 +55,48 @@ const availabilitySchema = v.object({
     notes: v.optional(v.string())
 })
 
-const availabilityState = reactive<AvailabilityFormState>({
+const scheduleState = reactive<ScheduleForm>({
     placement: '',
-    startTime: undefined,
+    date: '',
+    time: null,
     durationMinutes: 60,
     notes: '',
 })
 
 const selectedDate = computed(() => props.day.toString())
 
-const handleSubmit = (event: FormSubmitEvent<AvailabilityFormState>) => {
-    if (!event.data.startTime) {
+const handleSubmit = (event: FormSubmitEvent<ScheduleForm>) => {
+    if (!event.data.time) {
         return
     }
-
-    const endTime = addMinutesToTime(event.data.startTime, event.data.durationMinutes)
 
     emit('submit', {
         placement: event.data.placement.trim(),
         date: selectedDate.value,
-        startTime: event.data.startTime,
-        endTime,
-        notes: event.data.notes.trim() || undefined,
+        time: event.data.time,
+        durationMinutes: event.data.durationMinutes,
+        notes: event.data.notes.trim(),
     })
 
-    availabilityState.placement = ''
-    availabilityState.startTime = undefined
-    availabilityState.durationMinutes = 60
-    availabilityState.notes = ''
+    scheduleState.placement = ''
+    scheduleState.date = ''
+    scheduleState.time = null
+    scheduleState.durationMinutes = 60
+    scheduleState.notes = ''
 }
 </script>
 
 <template lang="pug">
-UForm(:schema="availabilitySchema" :state="availabilityState" @submit="handleSubmit" class="grid grid-cols-1 sm:grid-cols-2 gap-4 rounded-3xl bg-gradient-to-br from-elevated to-muted p-4")
+UForm(:schema="scheduleSchema" :state="scheduleState" @submit="handleSubmit" class="grid grid-cols-1 sm:grid-cols-2 gap-4 rounded-3xl bg-gradient-to-br from-elevated to-muted p-4")
     UFormField(label="Selected day" name="scheduledDate" class="col-span-full")
         UInput(:model-value="selectedDate" readonly)
     UFormField(label="Placement" name="placement")
-        USelect(v-model="availabilityState.placement" :items="locationOptions" class="w-full")
-    UFormField(label="Class time" name="startTime")
-        UInputTime(v-model="availabilityState.startTime" class="w-full")
+        USelect(v-model="scheduleState.placement" :items="locationOptions" class="w-full")
+    UFormField(label="Class time" name="time")
+        UInputTime(v-model="scheduleState.time" class="w-full")
     UFormField(label="Duration (minutes)" name="durationMinutes")
-        UInput(v-model.number="availabilityState.durationMinutes" type="number" min="15" step="15" class="w-full")
+        UInput(v-model.number="scheduleState.durationMinutes" type="number" min="15" step="15" class="w-full")
     UFormField(label="Notes" name="notes" class="col-span-full")
-        UTextarea(v-model="availabilityState.notes" placeholder="Optional details for the appointment" class="w-full")
+        UTextarea(v-model="scheduleState.notes" placeholder="Optional details for the appointment" class="w-full")
     UButton(type="submit" variant="outline" label="Schedule a class" trailing-icon="i-lucide-calendar-plus" class="sm:col-start-2 sm:justify-self-end")
 </template>
