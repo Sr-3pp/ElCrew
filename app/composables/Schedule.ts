@@ -17,10 +17,17 @@ export const useSchedule = (teacherId: string) => {
             body: schedule,
         })
 
+    const updateSchedule = async (schedule: { id: string, time: string }) =>  $fetch(`/api/profile/schedule`, {
+            method: 'PATCH',
+            credentials: 'include',
+            body: schedule,
+        })
+
     return {
         getSchedule,
         saveSchedule,
-        deleteSchedule
+        deleteSchedule,
+        updateSchedule
     }
 
 }
