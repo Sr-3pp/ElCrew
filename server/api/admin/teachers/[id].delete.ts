@@ -11,16 +11,16 @@ export default defineEventHandler(async (event) => {
 
   const db = useDrizzle();
 
-  const [appointment] = await db
-    .select({ id: tables.Appointment.id })
-    .from(tables.Appointment)
-    .where(eq(tables.Appointment.teacherId, id))
+  const [classSlot] = await db
+    .select({ id: tables.ClassSlot.id })
+    .from(tables.ClassSlot)
+    .where(eq(tables.ClassSlot.teacherId, id))
     .limit(1);
 
-  if (appointment) {
+  if (classSlot) {
     throw createError({
       status: 400,
-      statusText: 'Teacher has scheduled appointments and cannot be deleted',
+      statusText: 'Teacher has class slots and cannot be deleted',
     });
   }
 
