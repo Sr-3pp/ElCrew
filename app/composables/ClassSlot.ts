@@ -190,6 +190,7 @@ export const useClassSlotCalendar = (
 
 export const useClassSlots = (teacherId?: string) => {
   const classSlotKey = teacherId ? `class-slots-${teacherId}` : 'class-slots'
+  const publicClassSlotKey = 'public-class-slots'
 
   const getClassSlots = async () => $fetch<ClassSlotItem[]>('/api/profile/class-slots', {
     credentials: 'include',
@@ -215,12 +216,21 @@ export const useClassSlots = (teacherId?: string) => {
 
   const useClassSlotData = () => useAsyncData(classSlotKey, getClassSlots)
 
+  const getPublicClassSlots = async () => $fetch<ClassSlotItem[]>('/api/class-slots', {
+    credentials: 'include',
+  })
+
+  const usePublicClassSlotData = () => useAsyncData(publicClassSlotKey, getPublicClassSlots)
+
   return {
     classSlotKey,
+    publicClassSlotKey,
     getClassSlots,
+    getPublicClassSlots,
     saveClassSlot,
     deleteClassSlot,
     updateClassSlot,
     useClassSlotData,
+    usePublicClassSlotData,
   }
 }

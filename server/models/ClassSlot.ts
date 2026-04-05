@@ -9,7 +9,6 @@ export const ClassSlot = sqliteTable('schedules', {
   scheduledDate: text('scheduled_date').notNull(),
   scheduledTime: text('scheduled_time').notNull(),
   durationMinutes: integer('duration_minutes').notNull().default(60),
-  maxAttendees: integer('max_attendees').notNull().default(7),
   notes: text('notes'),
   status: text('status').notNull().default('scheduled'),
   ...timestampFields,
