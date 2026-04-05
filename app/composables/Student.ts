@@ -3,7 +3,7 @@ import type { Student, StudentPayload } from "~~/types/student"
 export const useStudents = () => {
     const getStudents = async () => {
         try {
-            const headers = process.server ? useRequestHeaders(['cookie']) : undefined
+            const headers = import.meta.server ? useRequestHeaders(['cookie']) : undefined
 
             const students = await $fetch<Student[]>('/api/admin/students', {
                 credentials: 'include',

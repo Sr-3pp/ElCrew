@@ -19,7 +19,7 @@ async function eventToRequest(event: H3Event) {
     }
   }
 
-  let body: BodyInit | undefined;
+  let body: string | Buffer | undefined;
   if (!METHODS_WITHOUT_BODY.has(normalizedMethod)) {
     const raw = await readRawBody(event);
     if (raw !== null && raw !== undefined) {

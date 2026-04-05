@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
       ok: false,
       name: err.name,
       message: err.message,
-      stack: process.dev ? err.stack : undefined,
+      stack: import.meta.dev ? err.stack : undefined,
     }
   }
 })

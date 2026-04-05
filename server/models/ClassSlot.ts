@@ -2,7 +2,7 @@ import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 import { User } from './User';
 import { timestampFields } from './shared';
 
-export const Schedule = sqliteTable('schedules', {
+export const ClassSlot = sqliteTable('schedules', {
   id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
   teacherId: text('teacher_id').notNull().references(() => User.id),
   placement: text('placement').notNull(),

@@ -1,10 +1,10 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import { getTeacherSinceLabel, toTeacherFromSession } from '~~/app/utils/teacher-util'
 
 const { session, fetchSession, refreshSession } = useAuth()
-const { updateProfile } = useProfile()
+const { updateProfile: submitTeacherProfile } = useProfile()
 
-const isScheduleModalOpen = ref(false)
+const isClassSlotModalOpen = ref(false)
 const isFormOpen = ref(false)
 const isPageReady = ref(false)
 
@@ -47,7 +47,7 @@ section
                     h2(class="text-3xl font-bold") {{ teacher?.name }} {{ teacher?.lastName }}
                     p(class="italic my-auto") "{{ teacher?.quote }}"
                     div(class="flex gap-4 mt-auto justify-end")
-                        UButton(@click="isScheduleModalOpen = true" v-if="isPageReady && isTeacher") Schedule
+                        UButton(@click="isClassSlotModalOpen = true" v-if="isPageReady && isTeacher") Class Slots
                         UButton(@click="isFormOpen = true" v-if="isPageReady && isTeacher") Edit Profile
             div(class="flex flex-col gap-8")
                 article(class="flex bg-muted p-6 rounded-2xl")
@@ -100,15 +100,15 @@ section
                     div(class="flex flex-col gap-4")
                         p(class="italic") "Amazing instructor, really helped me nail my kickflip!"
 
-    UDrawer(v-if="isPageReady && isTeacher" side="bottom" v-model:open="isScheduleModalOpen" title="Schedule a class" description="Schedule a class with this teacher" trigger="Schedule a class")
+    UDrawer(v-if="isPageReady && isTeacher" side="bottom" v-model:open="isClassSlotModalOpen" title="Manage class slots" description="Manage the class slots for this teacher" trigger="Manage class slots")
         template(#body)
-            ScheduleModal(:teacher-id="teacher?.id")
+            ClassSlotModal(:teacher-id="teacher?.id")
     UModal(v-if="isPageReady && isTeacher" v-model:open="isFormOpen" title="Edit Teacher Profile" description="Edit the profile of this teacher" trigger="Edit Teacher Profile")
         template(#body)
             TeacherForm(
                 v-if="teacher"
                 :teacher="teacher"
-                :submit-teacher="updateProfile"
+                :submit-teacher="submitTeacherProfile"
                 @saved="handleTeacherSaved"
             )
             p.text-sm.text-error(v-else) Unable to load teacher information.
