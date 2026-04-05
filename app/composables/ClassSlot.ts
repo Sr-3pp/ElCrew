@@ -3,12 +3,15 @@ import type { CalendarDate } from '@internationalized/date'
 import type { Ref } from 'vue'
 import type {
   ClassSlotBatchForm,
-  ClassSlotByDate,
   ClassSlotDay,
+  ClassSlotDayGroup,
   ClassSlotForm,
   ClassSlotItem,
+  ClassSlotLocationSource,
   ClassSlotLocationOption,
   ClassSlotMutationResult,
+  PublicClassSlotItem,
+  TeacherClassSlotItem,
   CreateClassSlotPayload,
   DeleteClassSlotPayload,
   UpdateClassSlotPayload,
@@ -101,9 +104,15 @@ export const createEmptyClassSlotDay = (date = ''): ClassSlotDay => ({
   appointments: [],
 })
 
-export const groupClassSlotsByDate = (classSlots: ClassSlotItem[]): ClassSlotByDate => {
-  return classSlots.reduce<ClassSlotByDate>((classSlotsByDate, item) => {
-    const dayClassSlots = classSlotsByDate[item.scheduledDate] ?? createEmptyClassSlotDay(item.scheduledDate)
+export const createEmptyClassSlotDayGroup = <T extends ClassSlotItem>(date = ''): ClassSlotDayGroup<T> => ({
+  date,
+  placement: '',
+  appointments: [],
+})
+
+export const groupClassSlotsByDate = <T extends ClassSlotItem>(classSlots: T[]): Record<string, ClassSlotDayGroup<T>> => {
+  return classSlots.reduce<Record<string, ClassSlotDayGroup<T>>>((classSlotsByDate, item) => {
+    const dayClassSlots = classSlotsByDate[item.scheduledDate] ?? createEmptyClassSlotDayGroup<T>(item.scheduledDate)
 
     dayClassSlots.appointments.push(item)
 
@@ -117,15 +126,15 @@ export const groupClassSlotsByDate = (classSlots: ClassSlotItem[]): ClassSlotByD
   }, {})
 }
 
-export const getClassSlotDay = (classSlotsByDate: ClassSlotByDate, date: string) => {
-  return classSlotsByDate[date] ?? createEmptyClassSlotDay(date)
+export const getClassSlotDay = <T extends ClassSlotItem>(classSlotsByDate: Record<string, ClassSlotDayGroup<T>>, date: string) => {
+  return classSlotsByDate[date] ?? createEmptyClassSlotDayGroup<T>(date)
 }
 
-export const hasBookedClassSlotTime = (classSlotsByDate: ClassSlotByDate, date: string, time: string) => {
+export const hasBookedClassSlotTime = <T extends ClassSlotItem>(classSlotsByDate: Record<string, ClassSlotDayGroup<T>>, date: string, time: string) => {
   return getClassSlotDay(classSlotsByDate, date).appointments.some(appointment => appointment.scheduledTime === time)
 }
 
-const toClassSlotLocationOption = (location: { meta?: Record<string, unknown> }) => {
+const toClassSlotLocationOption = (location: ClassSlotLocationSource) => {
   const label = typeof location.meta?.name === 'string' ? location.meta.name : null
   const value = typeof location.meta?.key === 'string' ? location.meta.key : null
 
@@ -163,8 +172,8 @@ export const useClassSlotLocations = () => {
   }
 }
 
-export const useClassSlotCalendar = (
-  classSlots: Ref<ClassSlotItem[] | null | undefined>,
+export const useClassSlotCalendar = <T extends ClassSlotItem>(
+  classSlots: Ref<T[] | null | undefined>,
   selectedDate: Ref<CalendarDate>,
 ) => {
   const classSlotsByDate = computed(() => groupClassSlotsByDate(classSlots.value ?? []))
@@ -192,7 +201,7 @@ export const useClassSlots = (teacherId?: string) => {
   const classSlotKey = teacherId ? `class-slots-${teacherId}` : 'class-slots'
   const publicClassSlotKey = 'public-class-slots'
 
-  const getClassSlots = async () => $fetch<ClassSlotItem[]>('/api/profile/class-slots', {
+  const getClassSlots = async () => $fetch<TeacherClassSlotItem[]>('/api/profile/class-slots', {
     credentials: 'include',
   })
 
@@ -216,7 +225,7 @@ export const useClassSlots = (teacherId?: string) => {
 
   const useClassSlotData = () => useAsyncData(classSlotKey, getClassSlots)
 
-  const getPublicClassSlots = async () => $fetch<ClassSlotItem[]>('/api/class-slots', {
+  const getPublicClassSlots = async () => $fetch<PublicClassSlotItem[]>('/api/class-slots', {
     credentials: 'include',
   })
 

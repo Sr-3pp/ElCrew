@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { getLocalTimeZone, today } from '@internationalized/date'
 import type { CalendarDate } from '@internationalized/date'
-import type { ClassSlotBatchSubmitPayload, ClassSlotItem } from '~~/types/class-slot'
+import type { ClassSlotBatchSubmitPayload, TeacherClassSlotItem } from '~~/types/class-slot'
 
 const { teacherId } = defineProps<{
   isAdmin?: boolean
@@ -52,7 +52,7 @@ const handleSubmit = async (payload: ClassSlotBatchSubmitPayload) => {
   await refreshClassSlots()
 }
 
-const handleDelete = async (classSlot: ClassSlotItem) => {
+const handleDelete = async (classSlot: TeacherClassSlotItem) => {
   await deleteClassSlot({ id: classSlot.id })
   await refreshClassSlots()
 }
@@ -73,9 +73,15 @@ section.py-16
                     h3(class="text-lg font-semibold") Class slots
                 ul(class="space-y-3")
                     li(v-for="classSlot in currentDayClassSlots.appointments" :key="classSlot.id" class="flex items-start justify-between gap-4 rounded-2xl bg-default p-4")
-                        div(class="space-y-1")
+                        div(class="space-y-3")
                             p(class="font-medium") {{ formatClassSlotTimeLabel(classSlot.scheduledTime) }}
                             p(v-if="classSlot.notes" class="text-sm text-muted") {{ classSlot.notes }}
+                            div(class="space-y-2")
+                                p(class="text-sm font-medium") {{ classSlot.attendees.length }} attendee{{ classSlot.attendees.length === 1 ? '' : 's' }}
+                                ul(v-if="classSlot.attendees.length" class="space-y-1")
+                                    li(v-for="attendee in classSlot.attendees" :key="attendee.bookingId" class="text-sm text-muted")
+                                        | {{ attendee.name }} {{ attendee.lastName }}
+                                p(v-else class="text-sm text-muted") No one registered yet.
                         UButton(icon="i-lucide-trash-2" color="error" variant="ghost" @click="handleDelete(classSlot)")
             UCard(v-else variant="soft")
                 p(class="text-sm text-muted") No class slots for this day.

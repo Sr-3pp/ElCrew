@@ -18,3 +18,7 @@ export type CreateBookingPayload = {
   dob: string
   notes?: string
 }
+
+export type BookingFormSchema = CreateBookingPayload & {
+  notes: string
+}

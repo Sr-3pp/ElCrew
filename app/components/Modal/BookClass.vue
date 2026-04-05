@@ -3,8 +3,8 @@ import { getLocalTimeZone, today } from '@internationalized/date'
 import type { CalendarDate } from '@internationalized/date'
 import type { FormSubmitEvent } from '@nuxt/ui'
 import * as v from 'valibot'
-import type { BookingFormState, CreateBookingPayload } from '~~/types/booking'
-import type { ClassSlotItem } from '~~/types/class-slot'
+import type { BookingFormSchema, BookingFormState, CreateBookingPayload } from '~~/types/booking'
+import type { PublicClassSlotItem } from '~~/types/class-slot'
 
 const { isOpen } = useModal('book')
 const { createBooking } = useBookings()
@@ -53,11 +53,11 @@ const getDayColor = (day: CalendarDate) => {
   return hasClassSlotsOnDay(day) ? 'success' : undefined
 }
 
-const getClassSlotLabel = (classSlot: ClassSlotItem) => {
+const getClassSlotLabel = (classSlot: PublicClassSlotItem) => {
   return `${formatClassSlotTimeLabel(classSlot.scheduledTime)} · ${getLocationLabel(classSlot.placement)}`
 }
 
-const handleSubmit = async (event: FormSubmitEvent<BookingFormState>) => {
+const handleSubmit = async (event: FormSubmitEvent<BookingFormSchema>) => {
   bookingError.value = null
   bookingSuccess.value = null
   isSubmitting.value = true

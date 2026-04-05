@@ -34,6 +34,22 @@ export type ClassSlotItem = {
   updatedAt: string
 }
 
+export type ClassSlotAttendee = {
+  bookingId: string
+  studentId: string
+  name: string
+  lastName: string
+  dob: string
+  status: string
+  notes: string | null
+}
+
+export type TeacherClassSlotItem = ClassSlotItem & {
+  attendees: ClassSlotAttendee[]
+}
+
+export type PublicClassSlotItem = ClassSlotItem
+
 export type ClassSlotDay = {
   date: string
   placement: string
@@ -42,9 +58,17 @@ export type ClassSlotDay = {
 
 export type ClassSlotByDate = Record<string, ClassSlotDay>
 
+export type ClassSlotDayGroup<T extends ClassSlotItem = ClassSlotItem> = Omit<ClassSlotDay, 'appointments'> & {
+  appointments: T[]
+}
+
 export type ClassSlotLocationOption = {
   label: string
   value: string
+}
+
+export type ClassSlotLocationSource = {
+  meta?: Record<string, unknown>
 }
 
 export type CreateClassSlotPayload = ClassSlotForm

@@ -3,7 +3,7 @@ import { drizzle } from 'drizzle-orm/libsql';
 
 import * as schema from '../models';
 
-export { sql, eq, and, or } from 'drizzle-orm';
+export { sql, eq, and, or, inArray } from 'drizzle-orm';
 
 export const tables = schema;
 
