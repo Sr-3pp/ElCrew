@@ -12,7 +12,7 @@ const emit = defineEmits<{
   submit: [payload: ClassSlotBatchSubmitPayload]
 }>()
 
-const { locationOptions } = useClassSlotLocations()
+const { locationOptions } = useLocations()
 
 const classSlotSchema = v.object({
   placement: v.pipe(

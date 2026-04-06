@@ -7,6 +7,6 @@ definePageMeta({
 <template>
     <div class="flex flex-col gap-4">
         <h1 class="text-2xl font-bold">Panel</h1>
-        <p>Bienvenida al panel administrativo. Aquí puedes gestionar alumnas y maestras.</p>
+        <p>Bienvenida al panel administrativo. Aquí puedes gestionar alumnos y maestras.</p>
     </div>
 </template>

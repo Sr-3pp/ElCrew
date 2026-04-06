@@ -7,7 +7,6 @@ import type {
   ClassSlotDayGroup,
   ClassSlotForm,
   ClassSlotItem,
-  ClassSlotLocationSource,
   ClassSlotLocationOption,
   ClassSlotMutationResult,
   PublicClassSlotItem,
@@ -16,13 +15,6 @@ import type {
   DeleteClassSlotPayload,
   UpdateClassSlotPayload,
 } from '~~/types/class-slot'
-
-export const createClassSlotFormState = (): ClassSlotForm => ({
-  placement: '',
-  date: '',
-  time: null,
-  notes: '',
-})
 
 export const createClassSlotBatchFormState = (): ClassSlotBatchForm => ({
   placement: '',
@@ -132,46 +124,6 @@ export const getClassSlotDay = <T extends ClassSlotItem>(classSlotsByDate: Recor
 
 export const hasBookedClassSlotTime = <T extends ClassSlotItem>(classSlotsByDate: Record<string, ClassSlotDayGroup<T>>, date: string, time: string) => {
   return getClassSlotDay(classSlotsByDate, date).appointments.some(appointment => appointment.scheduledTime === time)
-}
-
-const toClassSlotLocationOption = (location: ClassSlotLocationSource) => {
-  const label = typeof location.meta?.name === 'string' ? location.meta.name : null
-  const value = typeof location.meta?.key === 'string' ? location.meta.key : null
-
-  if (!label || !value) {
-    return null
-  }
-
-  return {
-    label,
-    value,
-  } satisfies ClassSlotLocationOption
-}
-
-const { getLocations } = useLocations()
-
-export const useClassSlotLocations = () => {
-  const { data: locations } = useAsyncData(
-    'class-slot-locations',
-    () => getLocations(),
-  )
-
-  const locationOptions = computed<ClassSlotLocationOption[]>(() => {
-    return locations.value?.flatMap((location) => {
-      const option = toClassSlotLocationOption(location)
-
-      return option ? [option] : []
-    }) ?? []
-  })
-
-  const getLocationLabel = (value: string) => {
-    return locationOptions.value.find(option => option.value === value)?.label ?? value
-  }
-
-  return {
-    locationOptions,
-    getLocationLabel,
-  }
 }
 
 export const useClassSlotCalendar = <T extends ClassSlotItem>(

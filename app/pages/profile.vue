@@ -52,13 +52,13 @@ section
             div(class="flex flex-col gap-8")
                 article(class="flex bg-muted p-6 rounded-2xl")
                     div
-                        h4(class="text-muted text-xs font-bold uppercase") Alumnas entrenadas
+                        h4(class="text-muted text-xs font-bold uppercase") Alumnos entrenados
                         p(class="text-3xl font-bold text-primary") 240
                     UIcon(name="i-ri-user-3-line" class="ml-auto my-auto size-10")
                 
                 article(class="flex bg-muted p-6 rounded-2xl")
                     div
-                        h4(class="text-muted text-xs font-bold uppercase") Alumnas entrenadas
+                        h4(class="text-muted text-xs font-bold uppercase") Alumnos entrenados
                         p(class="text-3xl font-bold text-primary") 240
                     UIcon(name="i-ri-user-3-line" class="ml-auto my-auto size-10")
                 
@@ -96,7 +96,7 @@ section
             div(class="flex flex-col gap-8")
                 UCard(variant="soft" class="h-full")
                     template(#header)
-                        h3 Comentarios de alumnas
+                        h3 Comentarios de alumnos
                     div(class="flex flex-col gap-4")
                         p(class="italic") "Increíble instructora, me ayudó muchísimo a aterrizar mi kickflip."
 

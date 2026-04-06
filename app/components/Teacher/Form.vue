@@ -198,7 +198,7 @@ UForm(:schema="teacherSchema" :state="teacherState" @submit="handleSubmit" class
     UFormField(label="Fecha de nacimiento" name="dob")
         UInput(v-model="teacherState.dob" type="date" class="w-full")
     UFormField(label="Frase" name="quote" class="col-span-full")
-        UTextarea(v-model="teacherState.quote" class="w-full" placeholder="Frase inspiradora para conectar con las alumnas")
+        UTextarea(v-model="teacherState.quote" class="w-full" placeholder="Frase inspiradora para conectar con las alumnos")
     UFormField(label="Biografía" name="bio" class="col-span-full")
         UTextarea(v-model="teacherState.bio" class="w-full" placeholder="Breve biografía")
     UFormField(label="Trucos favoritos" name="favoriteTricks" class="col-span-full")

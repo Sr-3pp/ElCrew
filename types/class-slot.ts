@@ -67,10 +67,6 @@ export type ClassSlotLocationOption = {
   value: string
 }
 
-export type ClassSlotLocationSource = {
-  meta?: Record<string, unknown>
-}
-
 export type CreateClassSlotPayload = ClassSlotForm
 
 export type UpdateClassSlotPayload = {
