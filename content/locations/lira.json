@@ -1,10 +1,10 @@
 {
     "key": "lira",
     "name": "Skatepark Parque Lira",
-    "address": "Calle de la Rosaleda, 28011 Madrid, España",
+    "address": "Av. Parque Lira 28, Observatorio, Miguel Hidalgo, 11830 Ciudad de México, CDMX, México",
     "coordinates": {
-        "latitude": 40.4681,
-        "longitude": -3.6172
+        "latitude": 19.4059093,
+        "longitude": -99.1889562
     },
     "description": "Skatepark Parque Lira es un espacio ideal para entrenar, tomar clases y avanzar con seguridad.",
     "picture": "https://picsum.photos/1100/400?random=1"
