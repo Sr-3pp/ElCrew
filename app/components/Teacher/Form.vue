@@ -36,25 +36,25 @@ const isValidDateInput = (value: string) => {
 const teacherSchema = v.object({
     username: v.pipe(
       v.string(),
-      v.minLength(3, 'Username must be at least 3 characters')
+      v.minLength(3, 'El nombre de usuario debe tener al menos 3 caracteres')
     ),
     email: v.pipe(
       v.string(),
-      v.email('Invalid email')
+      v.email('Correo electrónico inválido')
     ),
     password: v.optional(v.string()),
     name: v.pipe(
       v.string(),
-      v.minLength(2, 'Name must be at least 2 characters')
+      v.minLength(2, 'El nombre debe tener al menos 2 caracteres')
     ),
     lastName: v.pipe(
       v.string(),
-      v.minLength(3, 'Last name must be at least 3 characters')
+      v.minLength(3, 'Los apellidos deben tener al menos 3 caracteres')
     ),
     dob: v.pipe(
       v.string(),
-      v.minLength(1, 'Date of birth is required'),
-      v.check(isValidDateInput, 'Date of birth must be a valid YYYY-MM-DD date')
+      v.minLength(1, 'La fecha de nacimiento es obligatoria'),
+      v.check(isValidDateInput, 'La fecha de nacimiento debe tener un formato válido AAAA-MM-DD')
     ),
     quote: v.optional(v.string()),
     bio: v.optional(v.string()),
@@ -172,7 +172,7 @@ const handleSubmit = async (event: FormSubmitEvent<TeacherFormState>) => {
             teacherState.tiktok = ''
         }
     } catch (error) {
-        console.error('Error adding teacher:', error)
+        console.error('Error al guardar la maestra:', error)
     }
 }
 
@@ -181,33 +181,33 @@ const handleSubmit = async (event: FormSubmitEvent<TeacherFormState>) => {
 
 <template lang="pug">
 UForm(:schema="teacherSchema" :state="teacherState" @submit="handleSubmit" class="grid grid-cols-1 sm:grid-cols-2 gap-6")
-    UFormField(label="Picture" name="picture" class="col-span-full")
+    UFormField(label="Foto" name="picture" class="col-span-full")
         UFileUpload(v-model="teacherState.picture" :preview="true" accept="image/*")
-    UFormField(label="Username" name="username")
+    UFormField(label="Nombre de usuario" name="username")
         UInput(v-model="teacherState.username" class="w-full")
     UFormField(label="Email" name="email")
         UInput(v-model="teacherState.email" type="email" class="w-full")
-    UFormField(v-if="!props.teacher?.id" label="Password" name="password")
+    UFormField(v-if="!props.teacher?.id" label="Contraseña" name="password")
         .flex.gap-2
             UInput.flex-1(v-model="teacherState.password" type="text" class="w-full")
-            UButton(color="neutral" variant="outline" type="button" @click="generateStrongPassword") Generate
-    UFormField(label="Name" name="name")
+            UButton(color="neutral" variant="outline" type="button" @click="generateStrongPassword") Generar
+    UFormField(label="Nombre" name="name")
         UInput(v-model="teacherState.name" class="w-full")
-    UFormField(label="Last Name" name="lastName")
+    UFormField(label="Apellidos" name="lastName")
         UInput(v-model="teacherState.lastName" class="w-full")
-    UFormField(label="Date of Birth" name="dob")
+    UFormField(label="Fecha de nacimiento" name="dob")
         UInput(v-model="teacherState.dob" type="date" class="w-full")
-    UFormField(label="Quote" name="quote" class="col-span-full")
-        UTextarea(v-model="teacherState.quote" class="w-full" placeholder="Inspiring quote to attract students")
-    UFormField(label="Bio" name="bio" class="col-span-full")
-        UTextarea(v-model="teacherState.bio" class="w-full" placeholder="Short biography")
-    UFormField(label="Favorite Tricks" name="favoriteTricks" class="col-span-full")
+    UFormField(label="Frase" name="quote" class="col-span-full")
+        UTextarea(v-model="teacherState.quote" class="w-full" placeholder="Frase inspiradora para conectar con las alumnas")
+    UFormField(label="Biografía" name="bio" class="col-span-full")
+        UTextarea(v-model="teacherState.bio" class="w-full" placeholder="Breve biografía")
+    UFormField(label="Trucos favoritos" name="favoriteTricks" class="col-span-full")
         IncrementalInput(
             v-model="teacherState.favoriteTricks"
-            add-label="Add trick"
-            placeholder="Windmill"
+            add-label="Agregar truco"
+            placeholder="Kickflip"
         )
-    UFormField(label="Area of Focus" name="areaOfFocus")
+    UFormField(label="Área de enfoque" name="areaOfFocus")
         UInput(v-model="teacherState.areaOfFocus" class="w-full")
     UFormField(label="WhatsApp" name="whatsapp")
         UInput(v-model="teacherState.whatsapp" class="w-full")
@@ -215,5 +215,5 @@ UForm(:schema="teacherSchema" :state="teacherState" @submit="handleSubmit" class
         UInput(v-model="teacherState.instagram" class="w-full")
     UFormField(label="TikTok" name="tiktok")
         UInput(v-model="teacherState.tiktok" class="w-full")
-    UButton(type="submit" class="sm:col-start-2 sm:justify-self-end") {{ props.teacher?.id ? 'Save Changes' : 'Submit' }}
+    UButton(type="submit" class="sm:col-start-2 sm:justify-self-end") {{ props.teacher?.id ? 'Guardar cambios' : 'Guardar' }}
 </template>

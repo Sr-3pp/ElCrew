@@ -26,7 +26,7 @@ export const useAuth = () => {
     try {
       return await syncSession()
     } catch (e) {
-      throw new Error('Failed to fetch session', {
+      throw new Error('No se pudo obtener la sesión', {
         cause: e instanceof Error ? e : new Error(String(e)),
       })
     }
@@ -36,7 +36,7 @@ export const useAuth = () => {
     try {
       return await syncSession()
     } catch (e) {
-      throw new Error('Failed to refresh session', {
+      throw new Error('No se pudo actualizar la sesión', {
         cause: e instanceof Error ? e : new Error(String(e)),
       })
     }
@@ -55,12 +55,12 @@ export const useAuth = () => {
       const currentSession = await refreshSession()
 
       if (!currentSession) {
-        throw new Error('Session was not created after login')
+        throw new Error('No se creó una sesión después de iniciar sesión')
       }
 
       await navigateTo('/')
     } catch (e) {
-      throw new Error('Login failed', {
+      throw new Error('No se pudo iniciar sesión', {
         cause: e instanceof Error ? e : new Error(String(e)),
       })
     }
@@ -85,12 +85,12 @@ export const useAuth = () => {
       const currentSession = await refreshSession()
 
       if (!currentSession) {
-        throw new Error('Session was not created after registration')
+        throw new Error('No se creó una sesión después del registro')
       }
 
       await navigateTo('/')
     } catch (e) {
-      throw new Error('Registration failed', {
+      throw new Error('No se pudo completar el registro', {
         cause: e instanceof Error ? e : new Error(String(e)),
       })
     }
@@ -102,7 +102,7 @@ export const useAuth = () => {
       await authRequest('/api/auth/sign-out')
       session.value = null
     } catch (e) {
-      throw new Error('Logout failed', {
+      throw new Error('No se pudo cerrar la sesión', {
         cause: e instanceof Error ? e : new Error(String(e)),
       })
     }

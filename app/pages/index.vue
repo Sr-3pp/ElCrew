@@ -6,7 +6,7 @@ const { data: page } = await useAsyncData('content-home', () =>
 if (!page.value) {
   throw createError({
     statusCode: 404,
-    statusMessage: 'Home page content not found',
+    statusMessage: 'No se encontró el contenido de la página de inicio',
   })
 }
 </script>

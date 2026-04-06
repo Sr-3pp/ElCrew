@@ -45,20 +45,20 @@ const teacherOptions = computed(() => {
 const studentSchema = v.object({
     name: v.pipe(
       v.string(),
-      v.minLength(3, 'Username must be at least 3 characters')
+      v.minLength(3, 'El nombre debe tener al menos 3 caracteres')
     ),
     lastName: v.pipe(
       v.string(),
-      v.minLength(3, 'Last name must be at least 3 characters')
+      v.minLength(3, 'Los apellidos deben tener al menos 3 caracteres')
     ),
     dob: v.pipe(
       v.string(),
-            v.minLength(1, 'Date of birth is required'),
-            v.check(isValidDateInput, 'Date of birth must be a valid YYYY-MM-DD date')
+            v.minLength(1, 'La fecha de nacimiento es obligatoria'),
+            v.check(isValidDateInput, 'La fecha de nacimiento debe tener un formato válido AAAA-MM-DD')
     ),
     teacherId: v.pipe(
       v.string(),
-      v.minLength(1, 'Teacher is required')
+      v.minLength(1, 'Debes seleccionar una maestra')
     ),
     whatsapp: v.optional(v.string()),
     instagram: v.optional(v.string()),
@@ -124,8 +124,6 @@ watch(
 )
 
 const handleSubmit = async (event: FormSubmitEvent<StudentFormState>) => {
-    console.log('Submitting student form with data:', event.data)
-
     try {
         const contactEntries = Object.entries({
             whatsapp: event.data.whatsapp.trim(),
@@ -161,7 +159,7 @@ const handleSubmit = async (event: FormSubmitEvent<StudentFormState>) => {
             studentState.tiktok = ''
         }
     } catch (error) {
-        console.error('Error adding student:', error)
+        console.error('Error al guardar la alumna:', error)
     }
 }
 
@@ -169,19 +167,19 @@ const handleSubmit = async (event: FormSubmitEvent<StudentFormState>) => {
 
 <template lang="pug">
 UForm(:schema="studentSchema" :state="studentState" @submit="handleSubmit")
-    UFormField(label="Name" name="name")
+    UFormField(label="Nombre" name="name")
         UInput(v-model="studentState.name")
-    UFormField(label="Last Name" name="lastName")
+    UFormField(label="Apellidos" name="lastName")
         UInput(v-model="studentState.lastName")
-    UFormField(label="Date of Birth" name="dob")
+    UFormField(label="Fecha de nacimiento" name="dob")
         UInput(type="date" v-model="studentState.dob")
-    UFormField(label="Teacher" name="teacherId")
-        USelect(v-model="studentState.teacherId" :items="teacherOptions" placeholder="Select a teacher")
+    UFormField(label="Maestra" name="teacherId")
+        USelect(v-model="studentState.teacherId" :items="teacherOptions" placeholder="Selecciona una maestra")
     UFormField(label="WhatsApp" name="whatsapp")
         UInput(v-model="studentState.whatsapp")
     UFormField(label="Instagram" name="instagram")
         UInput(v-model="studentState.instagram")
     UFormField(label="TikTok" name="tiktok")
         UInput(v-model="studentState.tiktok")
-    UButton(type="submit") {{ props.student?.id ? 'Save Changes' : 'Submit' }}
+    UButton(type="submit") {{ props.student?.id ? 'Guardar cambios' : 'Guardar' }}
 </template>

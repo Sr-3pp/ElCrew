@@ -16,11 +16,11 @@ const modalSw = ref(false)
 const selectedStudent = ref<Student | null>(null)
 
 const columns = [
-    { accessorKey: 'name', header: 'Name' },
-    { accessorKey: 'lastName', header: 'Last Name' },
-    { accessorKey: 'dob', header: 'Date of Birth' },
-    { accessorKey: 'teacherId', header: 'Teacher' },
-    { id: 'actions', header: 'Actions' },
+    { accessorKey: 'name', header: 'Nombre' },
+    { accessorKey: 'lastName', header: 'Apellidos' },
+    { accessorKey: 'dob', header: 'Fecha de nacimiento' },
+    { accessorKey: 'teacherId', header: 'Maestra' },
+    { id: 'actions', header: 'Acciones' },
 ]
 
 const handleAddStudent = () => {
@@ -40,7 +40,7 @@ const handleEditStudent = (student: Student) => {
 }
 
 const handleDeleteStudent = async (student: Student) => {
-    const shouldDelete = window.confirm(`Delete ${student.name} ${student.lastName}?`)
+    const shouldDelete = window.confirm(`¿Eliminar a ${student.name} ${student.lastName}?`)
 
     if (!shouldDelete) {
         return
@@ -55,20 +55,20 @@ const handleDeleteStudent = async (student: Student) => {
 
 const getStudentActions = (student: Student) => [
     {
-        label: 'Edit',
+        label: 'Editar',
         icon: 'i-lucide-pencil',
         onSelect: () => handleEditStudent(student),
     },
     {
-        label: 'Delete',
+        label: 'Eliminar',
         icon: 'i-lucide-trash-2',
         color: 'error',
         onSelect: () => handleDeleteStudent(student),
     },
 ]
 
-const modalTitle = computed(() => selectedStudent.value ? 'Edit Student' : 'Add Student')
-const modalDescription = computed(() => selectedStudent.value ? 'Update the student information.' : 'Add a new student to the system.')
+const modalTitle = computed(() => selectedStudent.value ? 'Editar alumna' : 'Agregar alumna')
+const modalDescription = computed(() => selectedStudent.value ? 'Actualiza la información de la alumna.' : 'Agrega una nueva alumna al sistema.')
 const tableRows = computed(() => students.value || [])
 
 const teacherLabels = computed(() => {
@@ -80,19 +80,19 @@ const teacherLabels = computed(() => {
 
 const getTeacherLabel = (teacherId: string | null) => {
     if (!teacherId) {
-        return 'Unassigned'
+        return 'Sin asignar'
     }
 
-    return teacherLabels.value.get(teacherId) || 'Unknown teacher'
+    return teacherLabels.value.get(teacherId) || 'Maestra desconocida'
 }
 </script>
 
 <template lang="pug">
 section
     UContainer
-        h1.text-2xl.font-bold Students
-        p This is the students panel. You can manage students here.
-        UButton(@click="handleAddStudent") Add Student
+        h1.text-2xl.font-bold Alumnas
+        p Este es el panel de alumnas. Aquí puedes administrarlas.
+        UButton(@click="handleAddStudent") Agregar alumna
 
         UTable(:data="tableRows" :columns="columns")
             template(#teacherId-cell="{ row }")

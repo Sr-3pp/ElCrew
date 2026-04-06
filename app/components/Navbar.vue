@@ -17,22 +17,22 @@ const {data: navItems} = useAsyncData('navigation', async () => {
 })
 
 const authItems = computed(() => {
-  const username = session.value?.username || session.value?.name || 'User'
+  const username = session.value?.username || session.value?.name || 'Usuario'
   const fullName = [session.value?.profile?.name, session.value?.profile?.lastName].filter(Boolean).join(' ')
 
   return [
     {
-      label: 'Dashboard',
+      label: 'Panel',
       icon: 'i-ri-dashboard-line',
       onSelect: () => navigateTo('/panel')
     },
     {
-      label: 'Profile',
+      label: 'Perfil',
       icon: 'i-ri-user-line',
       onSelect: () => navigateTo('/profile')
     },
     {
-      label: 'Logout',
+      label: 'Cerrar sesión',
       icon: 'i-ri-logout-box-line',
       onSelect: () => logout()
     },
@@ -40,7 +40,7 @@ const authItems = computed(() => {
       label: username,
       avatar: {
         src: session.value?.profile?.picture || 'https://via.placeholder.com/150',
-        alt: fullName || `${username} avatar`,
+        alt: fullName || `Avatar de ${username}`,
         size: 'sm'
       },
     }
@@ -51,7 +51,7 @@ const { isOpen: bookModal, toggleModal: toggleBookModal } = useModal('book')
 </script>
 
 <template lang="pug">
-header
+header(class="sticky top-0 z-50 bg-muted/60 backdrop-blur shadow")
   UContainer.py-4
     nav.flex.items-center.justify-between
       figure
@@ -64,7 +64,7 @@ header
         UButton(icon="i-lucide-calendar" color="neutral" size="sm" @click="toggleBookModal()") Programar Clase
         UDropdownMenu(v-if="session" :items="authItems" :ui="{ item: 'items-center'}")
           UButton(icon="i-lucide-menu" color="neutral" variant="outline")
-        UButton(v-else @click="navigateTo('/login')") Login
+        UButton(v-else @click="navigateTo('/login')") Iniciar sesión
 </template>
 
 <style scoped></style>

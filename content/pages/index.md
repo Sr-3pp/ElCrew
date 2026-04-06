@@ -1,6 +1,6 @@
 ---
-title: El crew - Home page
-description: Welcome to the home page of our website. Explore our content and discover more about us.
+title: El Crew - Inicio
+description: Bienvenida a la página principal de El Crew. Explora nuestras clases, ubicaciones e instructores.
 navigation:
     title: Inicio
     order: 1
@@ -13,35 +13,35 @@ image:
     src:
         mobile: https://picsum.photos/300/350
         desktop: https://picsum.photos/300/400
-    alt: Skateboard guy
+    alt: Patinador en acción
 cta:
-    -   label: Join the crew
+    -   label: Únete al crew
         link: /register
         icon: i-lucide-arrow-right
 
-    -   label: Learn to shred
+    -   label: Conoce las clases
         link: /about
         color: secondary
 badge:
-    text: Clases Here
+    text: Clases aquí
     color: warning
     icon: i-lucide-rocket
 ---
 #title
-Level up your <br> <span class="text-secondary">street game</span>
+Lleva tu <br> <span class="text-secondary">skate al siguiente nivel</span>
 
 #description
-Master the board with the city's finest inswtructors.
+Aprende a dominar la tabla con algunas de las mejores instructoras de la ciudad.
 
 #caption
-500+ Shreders
-Joining the elite community of urban athletes this month
+500+ skaters
+Se suman este mes a nuestra comunidad de atletas urbanas
 ::
 
 ::Showcase
 ---
-title: The atelier Method
-subtitle: Professional mentorship
+title: Método El Crew
+subtitle: Acompañamiento profesional
 ---
 
 :::ShowcaseCard
@@ -49,10 +49,10 @@ subtitle: Professional mentorship
 icon: i-lucide-rocket
 ---
 #title
-Technical Precision
+Progresión técnica
 
 #description
-We break all the rules here
+Construimos bases sólidas para avanzar con seguridad.
 :::
 
 :::ShowcaseCard
@@ -60,10 +60,10 @@ We break all the rules here
 icon: i-lucide-rocket
 ---
 #title
-Technical Precision
+Entrenamiento personalizado
 
 #description
-We break all the rules here
+Adaptamos cada clase a la edad, nivel y objetivos de cada alumna.
 :::
 
 :::ShowcaseCard
@@ -71,18 +71,18 @@ We break all the rules here
 icon: i-lucide-rocket
 ---
 #title
-Technical Precision
+Comunidad real
 
 #description
-We break all the rules here
+Aprender también significa convivir, confiar y disfrutar el proceso.
 :::
 
 ::
 
 ::Gallery
 ---
-title: The Shredder Gallery
-subtitle: Witness the evolution. From first push to full deck control.
+title: Galería El Crew
+subtitle: "Mira la evolución: del primer impulso al control total sobre la tabla."
 images:
     - https://picsum.photos/300/400
     - https://picsum.photos/300/200
@@ -93,19 +93,19 @@ images:
 
 ::Testimonials
 ---
-title: Voices from the pavement
+title: Voces de la pista
 ---
 ::
 
 ::CtaBanner
 ---
-title: Ready to Start
-subtitle: Get ready with us, schedul a demo
+title: ¿Lista para empezar?
+subtitle: Entrena con nosotras y agenda una clase muestra.
 cta:
-    -   label: Book a free trial
+    -   label: Agenda una clase muestra
         link: /
         color: secondary
-    -   label: Download Program PDF
+    -   label: Descarga el programa en PDF
         color: neutral
         variant: outline
         link: /

@@ -1,9 +1,5 @@
 import { eq } from 'drizzle-orm';
 export default defineEventHandler(async (event) => {
-  if (!(await isAdmin(event))) {
-    throw createError({ status: 403, statusText: 'Forbidden' });
-  }
-
   const db = useDrizzle();
   await ensureProfileSchema(db)
 
