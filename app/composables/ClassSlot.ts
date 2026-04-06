@@ -148,10 +148,12 @@ const toClassSlotLocationOption = (location: ClassSlotLocationSource) => {
   } satisfies ClassSlotLocationOption
 }
 
+const { getLocations } = useLocations()
+
 export const useClassSlotLocations = () => {
   const { data: locations } = useAsyncData(
     'class-slot-locations',
-    () => queryCollection('config').where('stem', 'LIKE', '%locations%').all(),
+    () => getLocations(),
   )
 
   const locationOptions = computed<ClassSlotLocationOption[]>(() => {

@@ -29,7 +29,7 @@ const selectedDateLabel = computed(() => formatClassSlotDate(selectedDate.value.
 const currentPlacementLabel = computed(() => {
   return currentDayClassSlots.value.placement
     ? getLocationLabel(currentDayClassSlots.value.placement)
-    : 'No location selected for this day yet.'
+    : 'Todavía no hay una ubicación seleccionada para este día.'
 })
 
 const getDayColor = (day: CalendarDate) => {
@@ -70,21 +70,21 @@ section.py-16
                 p(class="text-sm text-muted") {{ currentPlacementLabel }}
             UCard(v-if="currentDayClassSlots.appointments.length" variant="soft")
                 template(#header)
-                    h3(class="text-lg font-semibold") Class slots
+                    h3(class="text-lg font-semibold") Horarios
                 ul(class="space-y-3")
                     li(v-for="classSlot in currentDayClassSlots.appointments" :key="classSlot.id" class="flex items-start justify-between gap-4 rounded-2xl bg-default p-4")
                         div(class="space-y-3")
                             p(class="font-medium") {{ formatClassSlotTimeLabel(classSlot.scheduledTime) }}
                             p(v-if="classSlot.notes" class="text-sm text-muted") {{ classSlot.notes }}
                             div(class="space-y-2")
-                                p(class="text-sm font-medium") {{ classSlot.attendees.length }} attendee{{ classSlot.attendees.length === 1 ? '' : 's' }}
+                                p(class="text-sm font-medium") {{ classSlot.attendees.length }} {{ classSlot.attendees.length === 1 ? 'asistente' : 'asistentes' }}
                                 ul(v-if="classSlot.attendees.length" class="space-y-1")
                                     li(v-for="attendee in classSlot.attendees" :key="attendee.bookingId" class="text-sm text-muted")
                                         | {{ attendee.name }} {{ attendee.lastName }}
-                                p(v-else class="text-sm text-muted") No one registered yet.
+                                p(v-else class="text-sm text-muted") Aún no hay personas registradas.
                         UButton(icon="i-lucide-trash-2" color="error" variant="ghost" @click="handleDelete(classSlot)")
             UCard(v-else variant="soft")
-                p(class="text-sm text-muted") No class slots for this day.
+                p(class="text-sm text-muted") No hay horarios para este día.
             ClassSlotForm(:day="selectedDate" @submit="handleSubmit")
-            p(v-if="isLoadingClassSlots" class="text-sm text-muted") Loading class slots...
+            p(v-if="isLoadingClassSlots" class="text-sm text-muted") Cargando horarios...
 </template>

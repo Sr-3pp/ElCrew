@@ -5,15 +5,15 @@ defineProps<{
 
 const testimonials = [
     {
-        name: 'John Doe',
-        title: 'CEO at Company',
-        quote: 'This is an amazing product! It has changed the way we do business.',
+        name: 'Mariana R.',
+        title: 'Alumna de nivel intermedio',
+        quote: 'Las clases me ayudaron a perder el miedo y a sentirme mucho más segura sobre la tabla.',
         avatar: 'https://randomuser.me/api/portraits/men/1.jpg'
     },
     {
-        name: 'Jane Smith',
-        title: 'CTO at Organization',
-        quote: 'I highly recommend this to anyone looking for a reliable solution.',
+        name: 'Sofía L.',
+        title: 'Mamá de alumna',
+        quote: 'El ambiente es cercano, profesional y muy seguro. Mi hija espera su clase cada semana.',
         avatar: 'https://randomuser.me/api/portraits/women/1.jpg'
     },
 ]
@@ -28,11 +28,11 @@ section(class="bg-muted")
                 UCard(variant="soft" v-for="(testimonial, index) in testimonials" :key="index")
                     p.mt-4 {{ testimonial.quote }}
                     div.flex.items-center.gap-4
-                        NuxtImg(:src="testimonial.avatar" alt="Avatar" class="size-12 rounded-full")
+                        NuxtImg(:src="testimonial.avatar" alt="Avatar de testimonio" class="size-12 rounded-full")
                         div
                             h3.text-lg.font-bold {{ testimonial.name }}
                             p.text-sm.text-muted {{ testimonial.title }}
             div(class="flex flex-col gap-8")
                 figure
-                    NuxtImg(src="https://picsum.photos/800/600" alt="Testimonial Image" class="w-full h-full object-cover rounded-lg")
+                    NuxtImg(src="https://picsum.photos/800/600" alt="Imagen de alumnas entrenando" class="w-full h-full object-cover rounded-lg")
 </template>

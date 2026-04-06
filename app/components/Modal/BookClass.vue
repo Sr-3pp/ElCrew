@@ -27,10 +27,10 @@ const {
 const selectedDateLabel = computed(() => formatClassSlotDate(selectedDate.value.toString()))
 
 const bookingSchema = v.object({
-  classSlotId: v.pipe(v.string(), v.minLength(1, 'Select a class to continue')),
-  name: v.pipe(v.string(), v.trim(), v.minLength(1, 'First name is required')),
-  lastName: v.pipe(v.string(), v.trim(), v.minLength(1, 'Last name is required')),
-  dob: v.pipe(v.string(), v.trim(), v.minLength(1, 'Birth date is required')),
+  classSlotId: v.pipe(v.string(), v.minLength(1, 'Selecciona una clase para continuar')),
+  name: v.pipe(v.string(), v.trim(), v.minLength(1, 'El nombre es obligatorio')),
+  lastName: v.pipe(v.string(), v.trim(), v.minLength(1, 'Los apellidos son obligatorios')),
+  dob: v.pipe(v.string(), v.trim(), v.minLength(1, 'La fecha de nacimiento es obligatoria')),
   notes: v.optional(v.string()),
 })
 
@@ -72,11 +72,11 @@ const handleSubmit = async (event: FormSubmitEvent<BookingFormSchema>) => {
 
   try {
     await createBooking(payload)
-    bookingSuccess.value = 'You are registered for the class.'
+    bookingSuccess.value = 'Tu registro a la clase quedó listo.'
   } catch (error) {
     bookingError.value = error instanceof Error
       ? error.message
-      : 'Booking failed'
+      : 'No se pudo completar la reservación'
   } finally {
     isSubmitting.value = false
   }
@@ -84,7 +84,7 @@ const handleSubmit = async (event: FormSubmitEvent<BookingFormSchema>) => {
 </script>
 
 <template lang="pug">
-UDrawer(v-model:open="isOpen" title="Book a class" description="Reserve a spot in an available class slot")
+UDrawer(v-model:open="isOpen" title="Reservar una clase" description="Aparta tu lugar en un horario disponible")
     template(#body)
         div(class="grid gap-6 lg:grid-cols-[auto_minmax(0,1fr)] lg:items-start")
             UCalendar(v-model="selectedDate" variant="subtle")
@@ -93,25 +93,25 @@ UDrawer(v-model:open="isOpen" title="Book a class" description="Reserve a spot i
             div(class="space-y-4")
                 div
                     h3(class="text-xl font-semibold") {{ selectedDateLabel }}
-                    p(class="text-sm text-muted") Fill in your information and choose one available class slot to register.
+                    p(class="text-sm text-muted") Completa tu información y elige un horario disponible para registrarte.
                 UCard(v-if="currentDayClassSlots.appointments.length" variant="soft")
                     template(#header)
-                        h4(class="font-semibold") Available slots
+                        h4(class="font-semibold") Horarios disponibles
                     UForm(:schema="bookingSchema" :state="bookingState" @submit="handleSubmit" class="space-y-4")
-                        UFormField(label="Class slot" name="classSlotId")
+                        UFormField(label="Horario" name="classSlotId")
                             URadioGroup(v-model="bookingState.classSlotId" :items="currentDayClassSlots.appointments.map(classSlot => ({ label: getClassSlotLabel(classSlot), value: classSlot.id }))")
-                        UFormField(label="First name" name="name")
-                            UInput(v-model="bookingState.name" placeholder="Your first name")
-                        UFormField(label="Last name" name="lastName")
-                            UInput(v-model="bookingState.lastName" placeholder="Your last name")
-                        UFormField(label="Birth date" name="dob")
+                        UFormField(label="Nombre" name="name")
+                            UInput(v-model="bookingState.name" placeholder="Tu nombre")
+                        UFormField(label="Apellidos" name="lastName")
+                            UInput(v-model="bookingState.lastName" placeholder="Tus apellidos")
+                        UFormField(label="Fecha de nacimiento" name="dob")
                             UInput(v-model="bookingState.dob" type="date")
-                        UFormField(label="Notes" name="notes")
-                            UTextarea(v-model="bookingState.notes" placeholder="Optional notes for the teacher")
-                        UButton(type="submit" :loading="isSubmitting" :disabled="!bookingState.classSlotId") Confirm booking
+                        UFormField(label="Notas" name="notes")
+                            UTextarea(v-model="bookingState.notes" placeholder="Notas opcionales para la maestra")
+                        UButton(type="submit" :loading="isSubmitting" :disabled="!bookingState.classSlotId") Confirmar reservación
                         p(v-if="bookingError" class="text-sm text-error") {{ bookingError }}
                         p(v-if="bookingSuccess" class="text-sm text-success") {{ bookingSuccess }}
                 UCard(v-else variant="soft")
                     p(class="text-sm text-muted")
-                        | {{ isLoadingClassSlots ? 'Loading available class slots...' : 'No class slots available for this day.' }}
+                        | {{ isLoadingClassSlots ? 'Cargando horarios disponibles...' : 'No hay horarios disponibles para este día.' }}
 </template>

@@ -8,15 +8,15 @@ const registerSchema = v.pipe(
   v.object({
     username: v.pipe(
       v.string(),
-      v.minLength(3, 'Username must be at least 3 characters')
+      v.minLength(3, 'El nombre de usuario debe tener al menos 3 caracteres')
     ),
     email: v.pipe(
       v.string(),
-      v.email('Invalid email')
+      v.email('Correo electrónico inválido')
     ),
     password: v.pipe(
       v.string(),
-      v.minLength(8, 'Password must be at least 8 characters')
+      v.minLength(8, 'La contraseña debe tener al menos 8 caracteres')
     ),
     confirmPassword: v.string(),
     isTeacher: v.boolean()
@@ -25,7 +25,7 @@ const registerSchema = v.pipe(
     v.partialCheck(
       [['password'], ['confirmPassword']],
       (input) => input.password === input.confirmPassword,
-      'Passwords do not match'
+      'Las contraseñas no coinciden'
     ),
     ['confirmPassword']
   )
@@ -63,27 +63,27 @@ const formUi = {
 <template lang="pug">
 section
   UContainer
-    h1 Register
-    p Create a new account.
+    h1 Registro
+    p Crea una cuenta nueva.
 
     //- Use @submit (Nuxt UI handles prevent internally IF fields are linked correctly)
     UForm(:schema="registerSchema" :state="state" @submit="onSubmit" :ui="formUi")
       
       //- CRITICAL: 'name' must be on UFormField and match the state key
-      UFormField(label="Username" name="username")
-        UInput(v-model="state.username" placeholder="Enter your username" class="w-full")
+      UFormField(label="Nombre de usuario" name="username")
+        UInput(v-model="state.username" placeholder="Escribe tu nombre de usuario" class="w-full")
       
       UFormField(label="Email" name="email")
-        UInput(v-model="state.email" placeholder="Enter your email" class="w-full")
+        UInput(v-model="state.email" placeholder="Escribe tu correo electrónico" class="w-full")
       
-      UFormField(label="Password" name="password")
-        UInput(v-model="state.password" type="password" placeholder="Enter your password" class="w-full")
+      UFormField(label="Contraseña" name="password")
+        UInput(v-model="state.password" type="password" placeholder="Escribe tu contraseña" class="w-full")
       
-      UFormField(label="Confirm Password" name="confirmPassword")
-        UInput(v-model="state.confirmPassword" type="password" placeholder="Confirm your password" class="w-full")
+      UFormField(label="Confirmar contraseña" name="confirmPassword")
+        UInput(v-model="state.confirmPassword" type="password" placeholder="Confirma tu contraseña" class="w-full")
 
       UFormField(name="isTeacher" class="col-span-full")
-        UCheckbox(v-model="state.isTeacher" label="I'm a teacher")
+        UCheckbox(v-model="state.isTeacher" label="Soy maestra")
       
-      UButton(type="submit" class="sm:col-start-2 sm:justify-self-end") Register
+      UButton(type="submit" class="sm:col-start-2 sm:justify-self-end") Registrarme
 </template>

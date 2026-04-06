@@ -4,7 +4,7 @@ import { toTeacherFormData } from '~~/app/utils/teacher-util'
 
 export const useTeachers = () => {
     const getTeachers = async () => {
-        return $fetch<Teacher[]>('/api/admin/teachers', {
+        return $fetch<Teacher[]>('/api/teachers', {
             credentials: 'include'
         })
     }
@@ -32,10 +32,17 @@ export const useTeachers = () => {
         })
     }
 
+    const getTeacherByUsername = async (username: string) => {
+        return $fetch<Teacher>(`/api/teachers/${username}`, {
+            credentials: 'include',
+        })
+    }
+
     return {
         getTeachers,
         createTeacher,
         updateTeacher,
         deleteTeacher,
+        getTeacherByUsername,
     }
 }

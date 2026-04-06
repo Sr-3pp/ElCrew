@@ -12,10 +12,10 @@ const modalSw = ref(false)
 const selectedTeacher = ref<Teacher | null>(null)
 
 const columns = [
-    { accessorKey: 'name', header: 'Name' },
+    { accessorKey: 'name', header: 'Nombre' },
     { accessorKey: 'email', header: 'Email' },
-    { accessorKey: 'dob', header: 'Date of Birth' },
-    { id: 'actions', header: 'Actions' },
+    { accessorKey: 'dob', header: 'Fecha de nacimiento' },
+    { id: 'actions', header: 'Acciones' },
 ]
 
 const handleAddTeacher = () => {
@@ -35,7 +35,7 @@ const handleEditTeacher = (teacher: Teacher) => {
 }
 
 const handleDeleteTeacher = async (teacher: Teacher) => {
-    const shouldDelete = window.confirm(`Delete ${teacher.name || teacher.username}?`)
+    const shouldDelete = window.confirm(`¿Eliminar a ${teacher.name || teacher.username}?`)
 
     if (!shouldDelete) {
         return
@@ -45,18 +45,18 @@ const handleDeleteTeacher = async (teacher: Teacher) => {
         await deleteTeacher(teacher.id)
         await refresh()
     } catch (error) {
-        console.error('Error deleting teacher:', error)
+        console.error('Error al eliminar la maestra:', error)
     }
 }
 
 const getTeacherActions = (teacher: Teacher) => [
     {
-        label: 'Edit',
+        label: 'Editar',
         icon: 'i-lucide-pencil',
         onSelect: () => handleEditTeacher(teacher),
     },
     {
-        label: 'Delete',
+        label: 'Eliminar',
         icon: 'i-lucide-trash-2',
         color: 'error',
         onSelect: () => handleDeleteTeacher(teacher),
@@ -64,22 +64,22 @@ const getTeacherActions = (teacher: Teacher) => [
 ]
 
 const tableRows = computed(() => teachers.value || [])
-const modalTitle = computed(() => selectedTeacher.value ? 'Edit Teacher' : 'Add Teacher')
-const modalDescription = computed(() => selectedTeacher.value ? 'Update the teacher information.' : 'Add a new teacher to the system.')
+const modalTitle = computed(() => selectedTeacher.value ? 'Editar maestra' : 'Agregar maestra')
+const modalDescription = computed(() => selectedTeacher.value ? 'Actualiza la información de la maestra.' : 'Agrega una nueva maestra al sistema.')
 </script>
 
 
 <template lang="pug">
 section
     UContainer
-        h1.text-2xl.font-bold Teachers
-        UButton(@click="handleAddTeacher") Add Teacher
+        h1.text-2xl.font-bold Maestras
+        UButton(@click="handleAddTeacher") Agregar maestra
 
         UTable(:data="tableRows" :columns="columns")
             template(#name-cell="{ row }")
                 span {{ [row.original.name, row.original.lastName].filter(Boolean).join(' ').trim() || row.original.username }}
             template(#dob-cell="{ row }")
-                span {{ row.original.dob || 'No birth date' }}
+                span {{ row.original.dob || 'Sin fecha de nacimiento' }}
             template(#actions-cell="{ row }")
                 UDropdownMenu(:items="getTeacherActions(row.original)")
                     UButton(icon="i-lucide-ellipsis-vertical" color="neutral" variant="ghost")

@@ -1,6 +1,6 @@
 ---
-title: El crew - About
-description: Learn more about El crew, our mission, and the team behind it. Discover our
+title: El Crew - Nosotras
+description: Conoce más sobre El Crew, nuestra misión, visión y los valores que impulsan nuestra comunidad.
 navigation:
     title: Nosotros
     order: 2
@@ -12,18 +12,18 @@ image:
     src:
         mobile: https://picsum.photos/300/350
         desktop: https://picsum.photos/300/400
-    alt: El crew logo
+    alt: Logotipo de El Crew
 badge:
-    text: Clases Here
+    text: Clases aquí
     color: warning
     icon: i-lucide-rocket
 ---
 
 #title
-El crew <br> <span class="text-secondary">Escuela de skate</span>
+El Crew <br> <span class="text-secondary">escuela de skate</span>
 
 #description
-Conoce mas sobre nosotras y nuestros objetivos y valores
+Conoce más sobre nosotras, nuestros objetivos y los valores que nos guían.
 ::
 
 ::Story
@@ -33,11 +33,11 @@ image:
     src:
         mobile: https://picsum.photos/300/350
         desktop: https://picsum.photos/300/200
-    alt: Mision ilustration
+    alt: Ilustración de la misión
 ---
 
 #title
-Nuestra mision
+Nuestra misión
 
 #description
 <strong>Formar skaters de todas las edades</strong> a través de un
@@ -57,7 +57,7 @@ icon: i-lucide-rocket
 ---
 
 #title
-Vision
+Visión
 
 #description
 Ser una escuela referente de skateboarding a nivel
@@ -75,7 +75,7 @@ confianza y superación personal.
 100%
 
 #value-label
-street commitment
+compromiso con la calle
 ::
 
 ::Showcase
@@ -89,10 +89,10 @@ cols: 4
 icon: i-lucide-rocket
 ---
 #title
-Technical Precision
+Respeto
 
 #description
-We break all the rules here
+Construimos espacios seguros donde cada persona aprende a su ritmo.
 :::
 
 :::ShowcaseCard
@@ -100,10 +100,10 @@ We break all the rules here
 icon: i-lucide-rocket
 ---
 #title
-Technical Precision
+Disciplina
 
 #description
-We break all the rules here
+Entrenamos con constancia, técnica y enfoque para progresar de verdad.
 :::
 
 :::ShowcaseCard
@@ -111,10 +111,10 @@ We break all the rules here
 icon: i-lucide-rocket
 ---
 #title
-Technical Precision
+Creatividad
 
 #description
-We break all the rules here
+Impulsamos el estilo propio y la expresión personal sobre la tabla.
 :::
 
 :::ShowcaseCard
@@ -122,10 +122,10 @@ We break all the rules here
 icon: i-lucide-rocket
 ---
 #title
-Technical Precision
+Comunidad
 
 #description
-We break all the rules here
+Creemos en el trabajo en equipo y en una cultura de apoyo mutuo.
 :::
 
 ::

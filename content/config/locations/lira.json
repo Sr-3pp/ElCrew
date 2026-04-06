@@ -1,11 +1,11 @@
 {
     "key": "lira",
     "name": "Skatepark Parque Lira",
-    "address": "Calle de la Rosaleda, 28011 Madrid, Spain",
+    "address": "Calle de la Rosaleda, 28011 Madrid, España",
     "coordinates": {
         "latitude": 40.4681,
         "longitude": -3.6172
     },
-    "description": "Skatepark Parque Lira is a popular skatepark located",
+    "description": "Skatepark Parque Lira es un espacio ideal para entrenar, tomar clases y avanzar con seguridad.",
     "picture": "https://picsum.photos/1100/400?random=1"
 }

@@ -18,11 +18,11 @@ const classSlotSchema = v.object({
   placement: v.pipe(
     v.string(),
     v.trim(),
-    v.minLength(2, 'Placement must be at least 2 characters'),
+    v.minLength(2, 'La ubicación debe tener al menos 2 caracteres'),
   ),
   times: v.pipe(
     v.array(v.union([v.null(), v.unknown()])),
-    v.check((value) => getValidClassSlotTimes(value).length > 0, 'At least one class time is required'),
+    v.check((value) => getValidClassSlotTimes(value).length > 0, 'Debes agregar al menos un horario'),
   ),
   notes: v.optional(v.string()),
 })
@@ -69,17 +69,17 @@ const handleSubmit = (event: FormSubmitEvent<ClassSlotBatchForm>) => {
 
 <template lang="pug">
 UForm(:schema="classSlotSchema" :state="classSlotState" @submit="handleSubmit" class="grid grid-cols-1 gap-4 rounded-3xl bg-gradient-to-br from-elevated to-muted p-4 sm:grid-cols-2")
-    UFormField(label="Selected day" name="scheduledDate" class="col-span-full")
+    UFormField(label="Día seleccionado" name="scheduledDate" class="col-span-full")
         UInput(:model-value="selectedDateLabel" readonly)
-    UFormField(label="Placement" name="placement")
+    UFormField(label="Ubicación" name="placement")
         USelect(v-model="classSlotState.placement" :items="locationOptions" class="w-full")
-    UFormField(label="Class times" name="times" class="col-span-full")
+    UFormField(label="Horarios de clase" name="times" class="col-span-full")
         .space-y-3
             .flex.items-center.gap-3(v-for="(_, index) in classSlotState.times" :key="index")
                 UInputTime(v-model="classSlotState.times[index]" class="flex-1")
                 UButton(icon="i-lucide-trash-2" color="error" variant="ghost" type="button" @click="removeTimeField(index)")
-            UButton(type="button" variant="soft" icon="i-lucide-plus" @click="addTimeField") Add another time
-    UFormField(label="Notes" name="notes" class="col-span-full")
-        UTextarea(v-model="classSlotState.notes" placeholder="Optional details for the appointment" class="w-full")
-    UButton(type="submit" variant="outline" label="Add class slots" trailing-icon="i-lucide-calendar-plus" class="sm:col-start-2 sm:justify-self-end")
+            UButton(type="button" variant="soft" icon="i-lucide-plus" @click="addTimeField") Agregar otro horario
+    UFormField(label="Notas" name="notes" class="col-span-full")
+        UTextarea(v-model="classSlotState.notes" placeholder="Detalles opcionales para la clase" class="w-full")
+    UButton(type="submit" variant="outline" label="Agregar horarios" trailing-icon="i-lucide-calendar-plus" class="sm:col-start-2 sm:justify-self-end")
 </template>

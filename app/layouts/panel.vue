@@ -8,9 +8,9 @@ UDashboardGroup
         .flex
             ul.flex.gap-2
                 li
-                NuxtLink(to="/panel/students") Students
+                NuxtLink(to="/panel/students") Alumnas
                 li
-                NuxtLink(to="/panel/teachers") Teachers
+                NuxtLink(to="/panel/teachers") Maestras
             UColorModeSwitch
     template(#body)
         NuxtPage

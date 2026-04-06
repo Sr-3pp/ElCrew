@@ -40,7 +40,7 @@ const removeValue = (index: number) => {
                     variant="link"
                     size="sm"
                     icon="i-lucide-circle-x"
-                    aria-label="Clear input"
+                    aria-label="Limpiar campo"
                     @click="updateValue(index, '')"
                 )
     UButton(
@@ -49,5 +49,5 @@ const removeValue = (index: number) => {
         variant="outline"
         type="button"
         @click="addValue"
-    ) {{ addLabel || 'Add item' }}
+    ) {{ addLabel || 'Agregar elemento' }}
 </template>
