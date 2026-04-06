@@ -2,6 +2,6 @@
 title: Instructors showcase
 description: the instructors showcase 
 navigation:
-    title: Maestros
+    title: Instructores
     order: 3
 ---
