@@ -9,6 +9,8 @@ if (!page.value) {
     statusMessage: 'No se encontró el contenido de la página de inicio',
   })
 }
+
+useContentSeo(page)
 </script>
 
 <template lang="pug">

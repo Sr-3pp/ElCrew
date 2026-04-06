@@ -10,6 +10,12 @@ export default defineContentConfig({
       },
       schema: z.object({
         order: z.number().optional(),
+        seo: z.object({
+          title: z.string().optional(),
+          description: z.string().optional(),
+          image: z.string().optional(),
+          noindex: z.boolean().optional(),
+        }).optional(),
       })
     }),
     // Data collection for JSON/YAML configuration files under content/_config

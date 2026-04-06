@@ -1,5 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
+import type { LocationSummary, NavigableLinkItem } from '~~/types/location'
+
 const { toggleModal: toggleBookModal } = useModal('book')
 
 const currentYear = new Date().getFullYear()
@@ -20,14 +22,14 @@ const { getLocations } = useLocations()
 const { data: locations } = useAsyncData('footer-locations', async () => {
   const items = await getLocations()
 
-  return items.map((location) => ({
+  return items.map((location): LocationSummary => ({
     key: String(location.key || ''),
     name: String(location.name || 'Ubicación'),
     address: String(location.address || ''),
   }))
 })
 
-const socialLinks = [
+const socialLinks: NavigableLinkItem[] = [
   {
     label: 'Instagram',
     icon: 'i-ri-instagram-line',

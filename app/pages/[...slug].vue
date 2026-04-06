@@ -11,6 +11,8 @@ if (!page.value) {
     statusMessage: `Page not found for path ${route.path}`,
   })
 }
+
+useContentSeo(page)
 </script>
 
 <template lang="pug">

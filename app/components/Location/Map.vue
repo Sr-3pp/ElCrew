@@ -1,12 +1,7 @@
 <script setup lang="ts">
-const props = defineProps<{
-  latitude?: number | null
-  longitude?: number | null
-  name?: string
-  address?: string
-  zoom?: number
-  height?: number
-}>()
+import type { LocationMapProps } from '~~/types/location'
+
+const props = defineProps<LocationMapProps>()
 
 const hasCoordinates = computed(() => {
   return Number.isFinite(props.latitude) && Number.isFinite(props.longitude)
