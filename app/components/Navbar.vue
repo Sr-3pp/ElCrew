@@ -51,7 +51,7 @@ const { isOpen: bookModal, toggleModal: toggleBookModal } = useModal('book')
 </script>
 
 <template lang="pug">
-header
+header(class="sticky top-0 z-50 bg-muted/60 backdrop-blur shadow")
   UContainer.py-4
     nav.flex.items-center.justify-between
       figure
