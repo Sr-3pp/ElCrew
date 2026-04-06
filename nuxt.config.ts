@@ -85,7 +85,8 @@ export default defineNuxtConfig({
     '@nuxt/test-utils',
     '@nuxt/ui',
     '@vercel/analytics',
-    '@nuxthub/core'
+    '@nuxthub/core',
+    '@nuxtjs/leaflet'
   ],
 
   css: ['@/assets/css/main.css'],

@@ -1,14 +1,8 @@
 <script setup lang="ts">
 import * as v from 'valibot';
 import type { FormSubmitEvent } from '@nuxt/ui';
-import type { Student, StudentPayload } from '~~/types/student';
+import type { Student, StudentFormState, StudentPayload } from '~~/types/student';
 import type { Teacher } from '~~/types/teacher';
-
-type StudentFormState = Omit<StudentPayload, 'contact'> & {
-    whatsapp: string;
-    instagram: string;
-    tiktok: string;
-};
 
 const props = defineProps<{
     student?: Student | null;

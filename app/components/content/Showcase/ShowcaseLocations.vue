@@ -2,7 +2,7 @@
 const { getLocations } = useLocations()
 
 const { data: locations } = await useAsyncData('locationss', () => getLocations())
-console.log('Ubicaciones obtenidas:', locations.value)
+console.log('locaitons', locations.value)
 </script>
 
 <template lang="pug">

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { parseContact, parseFavoriteTricks } from '~~/app/utils/teacher-util'
+import type { ExternalLinkItem } from '~~/types/location'
 
 const route = useRoute()
 const username = computed(() => String(route.params.username || ''))
@@ -36,7 +37,7 @@ const contact = computed(() => parseContact(teacher.value?.contact))
 
 const contactLinks = computed(() => {
   const currentContact = contact.value
-  const links: Array<{ label: string, href: string, icon: string }> = []
+  const links: ExternalLinkItem[] = []
 
   if (currentContact.whatsapp) {
     const normalizedPhone = currentContact.whatsapp.replace(/[^\d]/g, '')

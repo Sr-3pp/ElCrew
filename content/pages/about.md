@@ -1,5 +1,5 @@
 ---
-title: El Crew - Nosotras
+title: El Crew - Nosotros
 description: Conoce más sobre El Crew, nuestra misión, visión y los valores que impulsan nuestra comunidad.
 navigation:
     title: Nosotros

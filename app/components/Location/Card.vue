@@ -16,10 +16,10 @@ defineProps<{
 UCard
     template(#header)
         figure(class="p-3 rounded-xl bg-secondary flex items-center justify-center")
-            NuxtImg(:src="location.image || undefined" :alt="location.name || 'Imagen de ubicación'" size="lg" class="rounded-full")
+            NuxtImg(:src="location.picture || undefined" :alt="location.name || 'Imagen de ubicación'" size="lg" class="rounded-full")
         UBadge {{ location.name }}
     template(#body)
         p {{ location.address || 'Próximamente conocerás más sobre esta ubicación.' }}
     template(#footer)
-        UButton(:to="`/ubicaciones/${location.meta.key}`") Ver detalles  
+        UButton(:to="`/ubicaciones/${location.key}`") Ver detalles  
 </template>
