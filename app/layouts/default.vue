@@ -10,6 +10,7 @@ UApp
 		NuxtPage
 		div(class="fixed bottom-2 right-2")
 			UColorModeSwitch
+		PartnerBar
 		Footer
 		ModalBookClass
 </template>
