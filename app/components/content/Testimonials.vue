@@ -34,5 +34,5 @@ section(class="bg-muted")
                             p.text-sm.text-muted {{ testimonial.title }}
             div(class="flex flex-col gap-8")
                 figure
-                    NuxtImg(src="https://picsum.photos/800/600" alt="Imagen de alumnas entrenando" class="w-full h-full object-cover rounded-lg")
+                    NuxtImg(src="https://picsum.photos/800/600" alt="Imagen de alumnos entrenando" class="w-full h-full object-cover rounded-lg")
 </template>

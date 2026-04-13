@@ -47,5 +47,18 @@ export default defineContentConfig({
         picture: z.string(),
       }),
     }),
+    partners: defineCollection({
+      type: 'data',
+      source: {
+        include: "partners/**/*.json",
+        prefix: "/partners/"
+      },
+      schema: z.object({
+        name: z.string(),
+        description: z.string(),
+        logo: z.string(),
+        link: z.string().url(),
+      })
+    })
   },
 });

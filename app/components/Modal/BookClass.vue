@@ -8,7 +8,7 @@ import type { PublicClassSlotItem } from '~~/types/class-slot'
 
 const { isOpen } = useModal('book')
 const { createBooking } = useBookings()
-const { getLocationLabel } = useClassSlotLocations()
+const { getLocationLabel } = useLocations()
 const { usePublicClassSlotData } = useClassSlots()
 
 const selectedDate = shallowRef(today(getLocalTimeZone()))

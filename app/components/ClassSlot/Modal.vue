@@ -9,7 +9,7 @@ const { teacherId } = defineProps<{
 }>()
 
 const selectedDate = shallowRef(today(getLocalTimeZone()))
-const { getLocationLabel } = useClassSlotLocations()
+const { getLocationLabel } = useLocations()
 
 const {
   saveClassSlot,

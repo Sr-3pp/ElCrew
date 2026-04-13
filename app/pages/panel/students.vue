@@ -90,8 +90,8 @@ const getTeacherLabel = (teacherId: string | null) => {
 <template lang="pug">
 section
     UContainer
-        h1.text-2xl.font-bold Alumnas
-        p Este es el panel de alumnas. Aquí puedes administrarlas.
+        h1.text-2xl.font-bold Alumnos
+        p Este es el panel de alumnos. Aquí puedes administrarlas.
         UButton(@click="handleAddStudent") Agregar alumna
 
         UTable(:data="tableRows" :columns="columns")
