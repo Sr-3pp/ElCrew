@@ -10,9 +10,8 @@ export const createBookingFormState = (): BookingFormState => ({
 
 export const useBookings = () => {
   const createBooking = async (payload: CreateBookingPayload) => {
-    return $fetch<Booking>('/api/bookings', {
+    return apiFetch<Booking>('/api/bookings', {
       method: 'POST',
-      credentials: 'include',
       body: payload,
     })
   }

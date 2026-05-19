@@ -3,12 +3,7 @@ import type { Student, StudentPayload } from "~~/types/student"
 export const useStudents = () => {
     const getStudents = async () => {
         try {
-            const headers = import.meta.server ? useRequestHeaders(['cookie']) : undefined
-
-            const students = await $fetch<Student[]>('/api/admin/students', {
-                credentials: 'include',
-                headers,
-            })
+            const students = await apiFetch<Student[]>('/api/admin/students')
             return students || []
         } catch (error) {
             console.error('Error fetching students:', error)
@@ -18,10 +13,9 @@ export const useStudents = () => {
 
     const createStudent = async (payload: StudentPayload) => {
         try {
-            const student = await $fetch<Student>('/api/admin/students', {
+            const student = await apiFetch<Student>('/api/admin/students', {
                 method: 'POST',
                 body: payload,
-                credentials: 'include',
             })
             return student
         } catch (error) {
@@ -32,10 +26,9 @@ export const useStudents = () => {
 
     const updateStudent = async (id: string, payload: StudentPayload) => {
         try {
-            const student = await $fetch<Student>(`/api/admin/students/${id}`, {
+            const student = await apiFetch<Student>(`/api/admin/students/${id}`, {
                 method: 'PATCH',
                 body: payload,
-                credentials: 'include',
             })
             return student
         } catch (error) {
@@ -46,9 +39,8 @@ export const useStudents = () => {
 
     const deleteStudent = async (id: string) => {
         try {
-            await $fetch(`/api/admin/students/${id}`, {
+            await apiFetch(`/api/admin/students/${id}`, {
                 method: 'DELETE',
-                credentials: 'include',
             })
             return true
         } catch (error) {

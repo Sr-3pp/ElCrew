@@ -3,10 +3,9 @@ import { toTeacherFormData } from '~~/app/utils/teacher-util'
 
 export const useProfile = () => {
     const updateProfile = async (payload: TeacherPayload) => {
-        return $fetch<Teacher>('/api/profile', {
+        return apiFetch<Teacher>('/api/profile', {
             method: 'PATCH',
             body: toTeacherFormData(payload),
-            credentials: 'include',
         })
     }
 

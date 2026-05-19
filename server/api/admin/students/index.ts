@@ -1,11 +1,9 @@
 export default defineEventHandler(async (event) => {
-  if (!(await isAdmin(event))) {
-    return createError({ status: 403, statusText: 'Forbidden' }); 
-  }
+  await requireAdminSession(event)
 
-    const db = useDrizzle();
+  const db = useDrizzle();
 
-    const students = await db.select().from(tables.Student);
+  const students = await db.select().from(tables.Student);
 
-    return students;
+  return students;
 })

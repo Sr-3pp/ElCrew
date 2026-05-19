@@ -5,10 +5,9 @@ export const useAuth = () => {
   const session = useState<AuthUser | null>('session', () => null)
 
   const authRequest = async (path: string, body?: Record<string, unknown>) => {
-    return await $fetch(path, {
+    return await apiFetch(path, {
       method: 'POST',
       body,
-      credentials: 'include',
     })
   }
 
@@ -77,9 +76,8 @@ export const useAuth = () => {
         callbackURL: payload.callbackURL,
       })
 
-      await $fetch('/api/profile/bootstrap', {
+      await apiFetch('/api/profile/bootstrap', {
         method: 'POST',
-        credentials: 'include',
       })
 
       const currentSession = await refreshSession()

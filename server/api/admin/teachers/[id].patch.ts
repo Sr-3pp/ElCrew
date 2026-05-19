@@ -1,7 +1,5 @@
 export default defineEventHandler(async (event) => {
-  if (!(await isAdmin(event))) {
-    throw createError({ status: 403, statusText: 'Forbidden' });
-  }
+  await requireAdminSession(event)
 
   const id = getRouterParam(event, 'id');
   const {

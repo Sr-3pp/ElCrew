@@ -1,7 +1,7 @@
 <script setup lang="ts">
-const {getTeachers} = useTeachers()
+const { getTeachers } = useTeachers()
 
-const { data: teachers } = await useAsyncData('teacherss', () => getTeachers())
+const { data: teachers } = await useAsyncData('teachers', () => getTeachers())
 
 </script>
 

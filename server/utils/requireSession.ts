@@ -62,13 +62,3 @@ export async function requireTeacherSession(event: H3Event) {
 
   return session as AuthSession & { user: TeacherUser & { isTeacher: true } };
 }
-
-export async function isAdmin(event: H3Event) {
-  try {
-    await requireAdminSession(event)
-  } catch {
-    return false
-  }
-
-  return true
-}

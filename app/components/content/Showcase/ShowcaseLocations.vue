@@ -1,8 +1,7 @@
 <script setup lang="ts">
 const { getLocations } = useLocations()
 
-const { data: locations } = await useAsyncData('locationss', () => getLocations())
-console.log('locaitons', locations.value)
+const { data: locations } = await useAsyncData('locations', () => getLocations())
 </script>
 
 <template lang="pug">

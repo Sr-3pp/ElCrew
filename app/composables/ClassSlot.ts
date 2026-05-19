@@ -155,33 +155,26 @@ export const useClassSlots = (teacherId?: string) => {
   const classSlotKey = teacherId ? `class-slots-${teacherId}` : 'class-slots'
   const publicClassSlotKey = 'public-class-slots'
 
-  const getClassSlots = async () => $fetch<TeacherClassSlotItem[]>('/api/profile/class-slots', {
-    credentials: 'include',
-  })
+  const getClassSlots = async () => apiFetch<TeacherClassSlotItem[]>('/api/profile/class-slots')
 
-  const saveClassSlot = async (classSlot: CreateClassSlotPayload) => $fetch<ClassSlotItem>('/api/profile/class-slots', {
+  const saveClassSlot = async (classSlot: CreateClassSlotPayload) => apiFetch<ClassSlotItem>('/api/profile/class-slots', {
     method: 'POST',
-    credentials: 'include',
     body: classSlot,
   })
 
-  const deleteClassSlot = async (classSlot: DeleteClassSlotPayload) => $fetch<ClassSlotMutationResult>('/api/profile/class-slots', {
+  const deleteClassSlot = async (classSlot: DeleteClassSlotPayload) => apiFetch<ClassSlotMutationResult>('/api/profile/class-slots', {
     method: 'DELETE',
-    credentials: 'include',
     body: classSlot,
   })
 
-  const updateClassSlot = async (classSlot: UpdateClassSlotPayload) => $fetch<ClassSlotMutationResult>('/api/profile/class-slots', {
+  const updateClassSlot = async (classSlot: UpdateClassSlotPayload) => apiFetch<ClassSlotMutationResult>('/api/profile/class-slots', {
     method: 'PATCH',
-    credentials: 'include',
     body: classSlot,
   })
 
   const useClassSlotData = () => useAsyncData(classSlotKey, getClassSlots)
 
-  const getPublicClassSlots = async () => $fetch<PublicClassSlotItem[]>('/api/class-slots', {
-    credentials: 'include',
-  })
+  const getPublicClassSlots = async () => apiFetch<PublicClassSlotItem[]>('/api/class-slots')
 
   const usePublicClassSlotData = () => useAsyncData(publicClassSlotKey, getPublicClassSlots)
 

@@ -1,7 +1,5 @@
 export default defineEventHandler(async (event) => {
-  if (!(await isAdmin(event))) {
-    return createError({ status: 403, statusText: 'Forbidden' }); 
-  }
+  await requireAdminSession(event)
 
   return 'Hello Nitro'
 })
